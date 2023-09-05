@@ -1,3 +1,4 @@
+import type { ReplacementValue } from 'xregexp'
 import type { Context } from './core/context'
 
 export interface MatchGroup {
@@ -13,12 +14,19 @@ interface _Directive {
   nested?: boolean
 }
 
-export interface RecursiveProcessorOptions {
+export interface _ProcessorOptions {
   code: string
   id: string
-  directive: RecursiveDirective
+  directive: Directive
   ctx: Context
+}
 
+export interface NormalProcessorOptions extends _ProcessorOptions {
+  directive: NormalDirective
+}
+
+export interface RecursiveProcessorOptions extends _ProcessorOptions {
+  directive: RecursiveDirective
   matchGroup: MatchGroup
   replace: (code: string) => string
 }
@@ -33,7 +41,9 @@ export interface RecursiveDirective extends _Directive {
 }
 
 export interface NormalDirective extends _Directive {
+  nested?: false
   pattern: string | RegExp
+  processor(options: NormalProcessorOptions): ReplacementValue
 }
 
 export type Directive = RecursiveDirective | NormalDirective

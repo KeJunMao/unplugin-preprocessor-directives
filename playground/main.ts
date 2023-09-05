@@ -4,7 +4,7 @@
 document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
 
 console.log(1)
-// #if DEBUG
+// #if DEV
   console.log(2)
   // #if ASD != '233'
   console.log(3)

@@ -4,11 +4,18 @@ import XRegExp from 'xregexp'
 import type {
   Directive,
   MatchGroup,
+  NormalDirective,
   RecursiveDirective,
   UserOptions,
 } from '../types'
 
 import { builtinDirectives } from './directive'
+
+export interface replaceOptions {
+  code: string
+  id: string
+  directive: Directive
+}
 
 export class Context {
   cwd: string
@@ -29,17 +36,22 @@ export class Context {
     )
   }
 
-  replace() { }
+  replace({ code, id, directive: _directive }: replaceOptions) {
+    const directive = _directive as NormalDirective
+    return this.XRegExp.replace(code, directive.pattern, directive.processor({
+      id,
+      code,
+      directive,
+      ctx: this,
+    }))
+  }
 
   replaceRecursive({
     code,
     id,
-    directive,
-  }: {
-    code: string
-    id: string
-    directive: RecursiveDirective
-  }) {
+    directive: _directive,
+  }: replaceOptions) {
+    const directive = _directive as RecursiveDirective
     const startRegex = new RegExp(directive.pattern.start, 'mi')
     const endRegex = new RegExp(directive.pattern.end, 'mi')
 
@@ -103,13 +115,13 @@ export class Context {
           id,
           directive: directive as RecursiveDirective,
         })
-        : acc
+        : this.replace({
+          code,
+          id,
+          directive: directive as NormalDirective,
+        })
       return acc
     }, code)
-
-    // if (id.includes('main.ts')) {
-    //   console.log(data);
-    // }
 
     return data
   }
