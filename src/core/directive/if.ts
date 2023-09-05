@@ -9,13 +9,22 @@ function resolveConditional(test: string, env = process.env) {
   // eslint-disable-next-line no-new-func
   const evaluateCondition = new Function(
     'env',
-    `with (env||{}){ return ( ${test} ); }`,
+    `with (env){ return ( ${test} ); }`,
   )
 
   try {
     return evaluateCondition(env)
   }
   catch (error) {
+    if (error instanceof ReferenceError) {
+      const match = error.message.match(/(.*?) is not defined/)
+      if (match) {
+        const name = match[1]
+        // @ts-expect-error ignore
+        env[name] = false
+        return resolveConditional(test, env)
+      }
+    }
     return false
   }
 }
@@ -24,17 +33,17 @@ export default defineDirective(() => {
   return {
     nested: true,
     pattern: {
-      start: /#if\s(.*?)[\r\n]/gm,
+      start: /.*?#if\s(.*?)[\r\n]/gm,
       end: /\s*.*?#endif.*?$/gm,
     },
     processor({ matchGroup, replace, ctx }) {
       const code = replace(matchGroup.match)
-      const regex = /(#el(?:if|se))\s(.*?)[\r\n]/gm
+      const regex = /.*?(#el(?:if|se))\s*(.*)\s/gm
       const codeBlock = [
         '#if',
         matchGroup.left?.[1] || '',
         ...ctx.XRegExp.split(code, regex),
-      ]
+      ].map(v => v.trim())
 
       while (codeBlock.length) {
         const [variant, conditional, block] = codeBlock.splice(0, 3)

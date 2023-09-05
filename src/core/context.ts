@@ -29,7 +29,7 @@ export class Context {
     )
   }
 
-  replace() {}
+  replace() { }
 
   replaceRecursive({
     code,
@@ -107,9 +107,9 @@ export class Context {
       return acc
     }, code)
 
-    if (id.includes('main.ts')) {
-      // console.log(data);
-    }
+    // if (id.includes('main.ts')) {
+    //   console.log(data);
+    // }
 
     return data
   }
