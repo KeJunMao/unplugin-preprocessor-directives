@@ -4,7 +4,7 @@ import { defineDirective } from '.'
 
 export default defineDirective({
   nested: false,
-  name: '#define',
+  name: '#error',
   pattern: /.*?#(?<directive>(?:warning)|(?:error)|(?:info))\s*(?<message>.*)\s/gm,
   processor({ ctx, id }) {
     return (...args) => {

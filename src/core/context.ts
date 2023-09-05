@@ -1,6 +1,8 @@
 import process from 'node:process'
+import MagicString from 'magic-string'
+
 import type { Logger } from 'vite'
-import { createLogger, loadEnv } from 'vite'
+import { createFilter, createLogger, loadEnv } from 'vite'
 import XRegExp from 'xregexp'
 import type {
   Directive,
@@ -24,7 +26,8 @@ export class Context {
   env: Record<string, string>
   directives: Directive[] = []
   logger: Logger
-  constructor({ cwd = process.cwd(), directives = [] }: UserOptions = {}) {
+  filter: (id: unknown) => boolean
+  constructor({ cwd = process.cwd(), directives = [], exclude = [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/], include = ['**/*'] }: UserOptions = {}) {
     this.cwd = cwd
     this.XRegExp = XRegExp
     this.env = loadEnv(
@@ -40,6 +43,8 @@ export class Context {
     this.logger = createLogger(undefined, {
       prefix: 'unplugin-preprocessor-directives',
     })
+
+    this.filter = createFilter(include, exclude)
   }
 
   replace({ code, id, directive: _directive }: replaceOptions) {
@@ -113,7 +118,16 @@ export class Context {
     return replace(code)
   }
 
+  createSource(code: string, id: string) {
+    return new MagicString(code, {
+      filename: id,
+    })
+  }
+
   transform(code: string, id: string) {
+    if (!this.filter(id))
+      return
+    const source = this.createSource(code, id)
     const data = this.directives.reduce((acc, directive) => {
       acc = directive.nested
         ? this.replaceRecursive({
@@ -122,13 +136,22 @@ export class Context {
           directive: directive as RecursiveDirective,
         })
         : this.replace({
-          code,
+          code: acc,
           id,
           directive: directive as NormalDirective,
         })
       return acc
     }, code)
-
-    return data
+    source.overwrite(0, source.length(), data)
+    if (source.hasChanged()) {
+      return {
+        code: source.toString(),
+        map: source.generateMap({
+          source: id,
+          file: `${id}.map`,
+          includeContent: true,
+        }),
+      }
+    }
   }
 }

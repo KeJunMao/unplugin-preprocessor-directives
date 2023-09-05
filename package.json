@@ -112,6 +112,7 @@
     }
   },
   "dependencies": {
+    "magic-string": "^0.30.3",
     "unplugin": "^1.4.0",
     "xregexp": "^5.1.1"
   },
