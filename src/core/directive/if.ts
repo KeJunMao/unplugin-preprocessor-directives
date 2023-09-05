@@ -29,33 +29,32 @@ function resolveConditional(test: string, env = process.env) {
   }
 }
 
-export default defineDirective(() => {
-  return {
-    nested: true,
-    pattern: {
-      start: /.*?#if\s(.*?)[\r\n]/gm,
-      end: /\s*.*?#endif.*?$/gm,
-    },
-    processor({ matchGroup, replace, ctx }) {
-      const code = replace(matchGroup.match)
-      const regex = /.*?(#el(?:if|se))\s*(.*)\s/gm
-      const codeBlock = [
-        '#if',
-        matchGroup.left?.[1] || '',
-        ...ctx.XRegExp.split(code, regex),
-      ].map(v => v.trim())
+export default defineDirective({
+  name: '#if',
+  nested: true,
+  pattern: {
+    start: /.*?#if\s(.*?)[\r\n]/gm,
+    end: /\s*.*?#endif.*?$/gm,
+  },
+  processor({ matchGroup, replace, ctx }) {
+    const code = replace(matchGroup.match)
+    const regex = /.*?(#el(?:if|se))\s*(.*)\s/gm
+    const codeBlock = [
+      '#if',
+      matchGroup.left?.[1] || '',
+      ...ctx.XRegExp.split(code, regex),
+    ].map(v => v.trim())
 
-      while (codeBlock.length) {
-        const [variant, conditional, block] = codeBlock.splice(0, 3)
-        if (variant === '#if' || variant === '#elif') {
-          if (resolveConditional(conditional, ctx.env))
-            return block
-        }
-        else if (variant === '#else') {
+    while (codeBlock.length) {
+      const [variant, conditional, block] = codeBlock.splice(0, 3)
+      if (variant === '#if' || variant === '#elif') {
+        if (resolveConditional(conditional, ctx.env))
           return block
-        }
       }
-      return code
-    },
-  }
+      else if (variant === '#else') {
+        return block
+      }
+    }
+    return code
+  },
 })

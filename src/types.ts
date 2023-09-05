@@ -7,6 +7,9 @@ export interface MatchGroup {
 }
 
 interface _Directive {
+  name: string
+  // TODO
+  enforce?: 'pre' | 'post'
   nested?: boolean
 }
 
@@ -43,4 +46,4 @@ export interface Options {
   directives: (Directive | ((ctx: DirectiveContext) => Directive))[]
 }
 
-export interface UserOptions extends Partial<Options> {}
+export interface UserOptions extends Partial<Options> { }
