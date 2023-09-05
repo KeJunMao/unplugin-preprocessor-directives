@@ -1,6 +1,7 @@
 import type { Directive, DirectiveContext } from '../../types'
 import IfDirective from './if'
 import DefineDirective from './define'
+import ErrorDirective from './error'
 
 export function defineDirective(
   directive: Directive | ((ctx: DirectiveContext) => Directive),
@@ -8,4 +9,4 @@ export function defineDirective(
   return directive
 }
 
-export const builtinDirectives = [DefineDirective, IfDirective]
+export const builtinDirectives = [DefineDirective, IfDirective, ErrorDirective]

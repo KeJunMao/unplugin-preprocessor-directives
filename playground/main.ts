@@ -3,6 +3,10 @@
 /* prettier-ignore */
 document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
 
+// #error this is an error message
+// #warning this is a warning message
+// #info this is an info message
+
 console.log(1)
 // #if DEV
   console.log(2)

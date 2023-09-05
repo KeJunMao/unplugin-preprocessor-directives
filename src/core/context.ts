@@ -1,5 +1,6 @@
 import process from 'node:process'
-import { loadEnv } from 'vite'
+import type { Logger } from 'vite'
+import { createLogger, loadEnv } from 'vite'
 import XRegExp from 'xregexp'
 import type {
   Directive,
@@ -22,6 +23,7 @@ export class Context {
   XRegExp: typeof XRegExp
   env: Record<string, string>
   directives: Directive[] = []
+  logger: Logger
   constructor({ cwd = process.cwd(), directives = [] }: UserOptions = {}) {
     this.cwd = cwd
     this.XRegExp = XRegExp
@@ -34,6 +36,10 @@ export class Context {
     this.directives = [...directives, ...builtinDirectives].map(v =>
       typeof v === 'function' ? v(this) : v,
     )
+
+    this.logger = createLogger(undefined, {
+      prefix: 'unplugin-preprocessor-directives',
+    })
   }
 
   replace({ code, id, directive: _directive }: replaceOptions) {

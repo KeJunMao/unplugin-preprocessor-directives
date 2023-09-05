@@ -146,7 +146,7 @@ console.log('Debug version')
 // #endif
 
 // #if !MYTEST
-    console.log('MYTEST is not defined or false')
+console.log('MYTEST is not defined or false')
 // #endif
 ```
 
@@ -162,4 +162,17 @@ class MyClass {
     // #endif
   }
 }
+```
+### Error and warning and info messages
+
+You instruct the compiler to generate user-defined compiler errors and warnings and informational messages.
+
+- `#error`: Generates an error.
+- `#warning`: Generates a warning.
+- `#info`: Generates an informational message.
+
+```ts
+// #error this is an error message
+// #warning this is a warning message
+// #info this is an info message
 ```
