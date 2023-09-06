@@ -8,9 +8,9 @@
 [![License][license-src]][license-href]
 [![JSDocs][jsdocs-src]][jsdocs-href]
 
-English | [简体中文](./README.zh-cn.md)
+[English](./README.md) | 简体中文
 
-## Install
+## 安装
 
 ```bash
 npm i unplugin-preprocessor-directives
@@ -114,16 +114,16 @@ build({
 <br></details>
 
 
-## Usage
+## 使用
 
-### Defining symbols
+### 定义 symbols
 
-You use the following two preprocessor directives to define or undefine symbols for conditional compilation:
+您可以使用以下两个预处理器指令来定义或取消定义 symbols，以便进行条件编译：
 
-- `#define`: Define a symbol.
-- `#undef`: Undefine a symbol.
+- `#define`: 定义一个 symbol.
+- `#undef`: 取消定义一个 symbol.
 
-You use `#define` to define a symbol. When you use the symbol as the expression that's passed to the `#if` directive, the expression will evaluate to `true`, as the following example shows:
+使用 `#define` 可以定义一个 symbol。将 symbol 作为表达式传递给 `#if` 指令时，表达式的值将为 `true`，如下例所示：
 
 ```ts
 // #define VERBOSE
@@ -134,17 +134,17 @@ console.log('Verbose output version')
 ```
 
 > [!WARNING]
-> `#define` and `#undef` are Hoisting, like `var` in JavaScript.
+> `#define` 和 `#undef` 是提升的，类似 JavaScript 的 `var`。
 
-### Conditional compilation
+### 条件编译
 
-- `#if`: Opens a conditional compilation, where code is compiled only if the specified symbol is defined and evaluated to true.
-- `#elif`: Closes the preceding conditional compilation and opens a new conditional compilation based on if the specified symbol is defined and evaluated to true.
-- `#else`: Closes the preceding conditional compilation and opens a new conditional compilation if the previous specified symbol isn't defined or evaluated to false.
-- `#endif`: Closes the preceding conditional compilation.
+- `#if`: 打开条件编译，只有当指定的 symbol 被定义并求值为 true 时，代码才会被编译。
+- `#elif`:关闭前面的条件编译，并判断是否定义了指定的 symbol 并求值为 true 时，打开一个新的条件编译。
+- `#else`: 如果前一个指定的 symbol 未定义或求值为 false，则关闭前一个条件编译，并打开一个新的条件编译。
+- `#endif`: 关闭前面的条件编译。
 
 > [!NOTE]
-> By default, use vite's `loadEnv` function to load environment variables based on `process.env.NODE_ENV` and compile symbols as conditions.
+> 默认情况下，使用 vite 的 `loadEnv` 函数根据`process.env.NODE_ENV` 加载环境变量并作为条件编译 symbols。
 
 ```ts
 // src/index.ts
@@ -158,7 +158,7 @@ console.log('MYTEST is not defined or false')
 // #endif
 ```
 
-You can use the operators `==` (equality) and `!=` (inequality) to test for the bool values `true` or `false`. `true` means the symbol is defined. The statement `#if DEBUG` has the same meaning as `#if (DEBUG == true)`. You can use the `&&` (and), `||` (or), and `!` (not) operators to evaluate whether multiple symbols have been defined. You can also group symbols and operators with parentheses.
+可以使用运算符 `==` （相等）和 `!=` （不等）来测试 `true` 或 `false`。`true` 表示 symbol 已定义。语句 `#if DEBUG` 与 `#if (DEBUG == true)` 意义相同。支持使用 `&&` (与)、`||` (或) 和 `!` (非) 操作符来判断是否定义了多个 symbols。还可以用括号将 symbols 和运算符分组。
 
 ```ts
 class MyClass {
@@ -171,13 +171,13 @@ class MyClass {
   }
 }
 ```
-### Error and warning and info messages
+### 错误、警告和信息提示
 
-You instruct the compiler to generate user-defined compiler errors and warnings and informational messages.
+可以指示编译器生成用户定义的编译器错误、警告和信息。
 
-- `#error`: Generates an error.
-- `#warning`: Generates a warning.
-- `#info`: Generates an informational message.
+- `#error`: 生成一条错误消息。
+- `#warning`: 生成一条警告消息。
+- `#info`: 生成一条信息消息。
 
 ```ts
 // #error this is an error message
