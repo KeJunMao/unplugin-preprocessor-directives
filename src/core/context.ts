@@ -129,6 +129,11 @@ export class Context {
       return
     const source = this.createSource(code, id)
     const data = this.directives.reduce((acc, directive) => {
+      const { exclude = [], include = ['**/*'] } = directive
+      const filter = createFilter(include, exclude)
+      if (!filter(id))
+        return acc
+
       acc = directive.nested
         ? this.replaceRecursive({
           code,

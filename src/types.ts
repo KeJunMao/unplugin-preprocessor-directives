@@ -13,6 +13,8 @@ interface _Directive {
   // TODO
   enforce?: 'pre' | 'post'
   nested?: boolean
+  include?: FilterPattern
+  exclude?: FilterPattern
 }
 
 export interface _ProcessorOptions {
