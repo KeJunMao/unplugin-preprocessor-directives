@@ -4,7 +4,7 @@ import { defineDirective } from '../directive'
 export default defineDirective({
   nested: false,
   name: '#define',
-  pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>.*)\s/gm,
+  pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
   processor({ ctx }) {
     return (...args) => {
       const group = args[args.length - 1] as NamedGroupsArray
