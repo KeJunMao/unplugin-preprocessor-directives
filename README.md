@@ -1,6 +1,11 @@
 # unplugin-preprocessor-directives
 
-[![NPM version](https://img.shields.io/npm/v/unplugin-preprocessor-directives?color=a1b858&label=)](https://www.npmjs.com/package/unplugin-preprocessor-directives)
+[![npm version][npm-version-src]][npm-version-href]
+[![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![bundle][bundle-src]][bundle-href]
+[![License][license-src]][license-href]
+[![JSDocs][jsdocs-src]][jsdocs-href]
+
 
 ## Install
 
@@ -176,3 +181,14 @@ You instruct the compiler to generate user-defined compiler errors and warnings 
 // #warning this is a warning message
 // #info this is an info message
 ```
+
+[npm-version-src]: https://img.shields.io/npm/v/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
+[npm-version-href]: https://npmjs.com/package/unplugin-preprocessor-directives
+[npm-downloads-src]: https://img.shields.io/npm/dm/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
+[npm-downloads-href]: https://npmjs.com/package/unplugin-preprocessor-directives
+[bundle-src]: https://img.shields.io/bundlephobia/minzip/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
+[bundle-href]: https://bundlephobia.com/result?p=unplugin-preprocessor-directives
+[license-src]: https://img.shields.io/github/license/kejunmao/unplugin-preprocessor-directives.svg?style=flat&colorA=18181B&colorB=F0DB4F
+[license-href]: https://github.com/kejunmao/unplugin-preprocessor-directives/blob/main/LICENSE
+[jsdocs-src]: https://img.shields.io/badge/jsDocs.io-reference-18181B?style=flat&colorA=18181B&colorB=F0DB4F
+[jsdocs-href]: https://www.jsdocs.io/package/unplugin-preprocessor-directives
