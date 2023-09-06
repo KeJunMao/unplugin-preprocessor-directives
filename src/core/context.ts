@@ -12,7 +12,7 @@ import type {
   UserOptions,
 } from '../types'
 
-import { builtinDirectives } from './directive'
+import { builtinDirectives } from './directives'
 
 export interface replaceOptions {
   code: string
@@ -32,7 +32,7 @@ export class Context {
     this.XRegExp = XRegExp
     this.env = loadEnv(
       process.env.NODE_ENV || 'development',
-      process.cwd(),
+      cwd,
       '',
     )
 
@@ -142,7 +142,9 @@ export class Context {
         })
       return acc
     }, code)
-    source.overwrite(0, source.length(), data)
+    if (data !== code)
+      source.overwrite(0, source.length(), data)
+
     if (source.hasChanged()) {
       return {
         code: source.toString(),

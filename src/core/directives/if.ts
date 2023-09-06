@@ -1,23 +1,19 @@
 import process from 'node:process'
-import { defineDirective } from '.'
+import { defineDirective } from '../directive'
 
 function resolveConditional(test: string, env = process.env) {
   test = test || 'true'
   test = test.trim()
   test = test.replace(/([^=!])=([^=])/g, '$1==$2')
-
   // eslint-disable-next-line no-new-func
-  const evaluateCondition = new Function(
-    'env',
-    `with (env){ return ( ${test} ); }`,
-  )
+  const evaluateCondition = new Function('env', `with (env){ return ( ${test} ) }`)
 
   try {
     return evaluateCondition(env)
   }
   catch (error) {
     if (error instanceof ReferenceError) {
-      const match = error.message.match(/(.*?) is not defined/)
+      const match = error.message.match(/(.*?) is not defined/g)
       if (match) {
         const name = match[1]
         // @ts-expect-error ignore
@@ -33,12 +29,12 @@ export default defineDirective({
   name: '#if',
   nested: true,
   pattern: {
-    start: /.*?#if\s(.*?)[\r\n]/gm,
+    start: /.*?#if\s([\w !=&|()'"]*).*[\r\n]{1,2}/gm,
     end: /\s*.*?#endif.*?$/gm,
   },
   processor({ matchGroup, replace, ctx }) {
     const code = replace(matchGroup.match)
-    const regex = /.*?(#el(?:if|se))\s*(.*)\s/gm
+    const regex = /.*?(#el(?:if|se))\s?([\w !=&|()'"]*).*[\r\n]{1,2}/gm
     const codeBlock = [
       '#if',
       matchGroup.left?.[1] || '',
