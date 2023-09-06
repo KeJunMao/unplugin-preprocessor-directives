@@ -1,3 +1,5 @@
+<img src="assets/logo.svg" alt="logo" width="100" height="100" align="right" />
+
 # unplugin-preprocessor-directives
 
 [![npm version][npm-version-src]][npm-version-href]
@@ -6,6 +8,7 @@
 [![License][license-src]][license-href]
 [![JSDocs][jsdocs-src]][jsdocs-href]
 
+English | [简体中文](./README.zh-cn.md)
 
 ## Install
 
