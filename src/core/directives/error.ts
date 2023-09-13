@@ -5,7 +5,7 @@ import { defineDirective } from '../directive'
 export default defineDirective({
   nested: false,
   name: '#error',
-  pattern: /.*?#(?<directive>(?:warning)|(?:error)|(?:info))\s*(?<message>[\u4E00-\u9FA5\s\w]*).*/gm,
+  pattern: /.*?#(?<directive>(?:warning)|(?:error)|(?:info))\s*(?<message>[\u4E00-\u9FA5 \t\w]*).*?$/gm,
   processor({ ctx, id }) {
     return (...args) => {
       const group = args[args.length - 1] as NamedGroupsArray
