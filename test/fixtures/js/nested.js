@@ -1,4 +1,4 @@
-// #if !DEV
+// #if DEV
   // #if !TEST
   console.log("!DEV !TEST")
   // #else
