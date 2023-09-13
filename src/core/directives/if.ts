@@ -13,8 +13,8 @@ function resolveConditional(test: string, env = process.env) {
   }
   catch (error) {
     if (error instanceof ReferenceError) {
-      const match = error.message.match(/(.*?) is not defined/g)
-      if (match) {
+      const match = /(\w*?) is not defined/g.exec(error.message)
+      if (match && match[1]) {
         const name = match[1]
         // @ts-expect-error ignore
         env[name] = false
