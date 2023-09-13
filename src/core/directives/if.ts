@@ -51,6 +51,6 @@ export default defineDirective({
         return block
       }
     }
-    return code
+    return ''
   },
 })
