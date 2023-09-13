@@ -1,8 +1,8 @@
 {
   "name": "vite-vue-ts",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -12,9 +12,9 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
-    "unplugin-preprocessor-directives": "workspace:*",
     "@vitejs/plugin-vue": "^4.2.3",
     "typescript": "^5.0.2",
+    "unplugin-preprocessor-directives": "workspace:*",
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"
   }
