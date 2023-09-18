@@ -102,7 +102,7 @@
     "@nuxt/schema": "^3",
     "esbuild": "*",
     "rollup": "^3",
-    "rspack": "*",
+    "@rspack/core": "*",
     "vite": ">=3",
     "webpack": "^4 || ^5"
   },
@@ -116,7 +116,7 @@
     "vite": {
       "optional": true
     },
-    "rspack": {
+    "@rspack/core": {
       "optional": true
     },
     "esbuild": {
