@@ -184,6 +184,58 @@ You instruct the compiler to generate user-defined compiler errors and warnings 
 // #warning this is a warning message
 // #info this is an info message
 ```
+## Custom directive
+
+You can used `defineDirective` to define your own directive.
+
+Taking the built-in directive as an example:
+
+```ts
+/** @see https://xregexp.com/ */
+import type { NamedGroupsArray } from 'xregexp'
+import { defineDirective } from 'unplugin-preprocessor-directives'
+
+export default defineDirective({
+  name: '#define',
+  nested: false,
+  pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
+  processor({ ctx }) {
+    return (...args) => {
+      const group = args[args.length - 1] as NamedGroupsArray
+      if (group.directive === 'define')
+        // @ts-expect-error ignore
+        ctx.env[group.key] = true
+
+      else if (group.directive === 'undef')
+        delete ctx.env[group.key]
+
+      return ''
+    }
+  },
+})
+```
+
+### `name: string`
+
+directive name, used to identify the directive in warning and error messages
+
+### `enforce: 'pre' | 'post'`
+
+Execution priority of directives
+
+- `pre`: Execute as early as possible
+- `post`: Execute as late as possible
+
+### `nested: boolean`
+
+Is it a nested instruction, The default is `false`. If it is `true`, `matchRecursive` will be used internally for replace and recursive calls. Otherwise, `replace` will be used`
+
+### `pattern`
+
+The regular expression of the directive, if it is a nested instruction, needs to specify the `start` and `end` regular expressions
+### `processor`
+
+The processing function of the directive.
 
 [npm-version-src]: https://img.shields.io/npm/v/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-version-href]: https://npmjs.com/package/unplugin-preprocessor-directives

@@ -69,7 +69,7 @@ export class Context {
     })
     this.directiveLoggers = this.directives.reduce((acc, directive) => {
       acc[directive.name] = createLogger(undefined, {
-        prefix: `unplugin-preprocessor-directives-${directive.name}`,
+        prefix: `unplugin-preprocessor-directives:${directive.name}`,
       })
       return acc
     }, {} as Record<string, Logger>)

@@ -185,6 +185,61 @@ class MyClass {
 // #info this is an info message
 ```
 
+## 自定义指令
+
+您可以使用 `defineDirective` 定义自己的指令。
+
+以内置指令为例：
+
+```ts
+/** @see https://xregexp.com/ */
+import type { NamedGroupsArray } from 'xregexp'
+import { defineDirective } from 'unplugin-preprocessor-directives'
+
+export default defineDirective({
+  name: '#define',
+  nested: false,
+  pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
+  processor({ ctx }) {
+    return (...args) => {
+      const group = args[args.length - 1] as NamedGroupsArray
+      if (group.directive === 'define')
+        // @ts-expect-error ignore
+        ctx.env[group.key] = true
+
+      else if (group.directive === 'undef')
+        delete ctx.env[group.key]
+
+      return ''
+    }
+  },
+})
+```
+
+### `name: string`
+
+指令的名称，用于在警告和错误消息中标识指令。
+
+### `enforce: 'pre' | 'post'`
+
+指令的执行优先级
+
+- `pre` 尽可能早执行
+- `post` 尽可能晚执行
+
+### `nested: boolean`
+
+是否为嵌套指令，默认为 `false`，如果为 `true` 在内部将使用 `matchRecursive` 进行 `replace` 并递归调用, 否则使用 `replace`
+
+### `pattern`
+
+指令的正则表达式，如果是嵌套指令，需要指定开始和结束的正则表达式
+
+### `processor`
+
+指令的处理函数。
+
+
 [npm-version-src]: https://img.shields.io/npm/v/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-version-href]: https://npmjs.com/package/unplugin-preprocessor-directives
 [npm-downloads-src]: https://img.shields.io/npm/dm/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
