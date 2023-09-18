@@ -1,7 +1,7 @@
-import type { Directive, DirectiveContext } from '../types'
+import type { Directive, FunctionDirective } from '../types'
 
 export function defineDirective(
-  directive: Directive | ((ctx: DirectiveContext) => Directive),
+  directive: Directive | FunctionDirective,
 ) {
   return directive
 }

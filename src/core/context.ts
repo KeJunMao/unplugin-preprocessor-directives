@@ -19,6 +19,25 @@ export interface replaceOptions {
   id: string
   directive: Directive
 }
+export function sortUserDirectives(
+  directives: Directive[],
+): [Directive[], Directive[], Directive[]] {
+  const preDirectives: Directive[] = []
+  const postDirectives: Directive[] = []
+  const normalDirectives: Directive[] = []
+
+  if (directives) {
+    directives.forEach((p) => {
+      if (p.enforce === 'pre')
+        preDirectives.push(p)
+      else if (p.enforce === 'post')
+        postDirectives.push(p)
+      else normalDirectives.push(p)
+    })
+  }
+
+  return [preDirectives, normalDirectives, postDirectives]
+}
 
 export class Context {
   cwd: string
@@ -36,9 +55,13 @@ export class Context {
       '',
     )
 
-    this.directives = [...directives, ...builtinDirectives].map(v =>
+    const [preDirectives, normalDirectives, postDirectives] = sortUserDirectives(directives.map(v =>
       typeof v === 'function' ? v(this) : v,
-    )
+    ))
+
+    this.directives = [...builtinDirectives.map(v =>
+      typeof v === 'function' ? v(this) : v,
+    ), ...preDirectives, ...normalDirectives, ...postDirectives]
 
     this.logger = createLogger(undefined, {
       prefix: 'unplugin-preprocessor-directives',

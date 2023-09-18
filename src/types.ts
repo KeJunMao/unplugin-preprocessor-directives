@@ -8,9 +8,8 @@ export interface MatchGroup {
   right: RegExpExecArray | null
 }
 
-interface _Directive {
+interface BaseDirective {
   name: string
-  // TODO
   enforce?: 'pre' | 'post'
   nested?: boolean
   include?: FilterPattern
@@ -34,7 +33,7 @@ export interface RecursiveProcessorOptions extends _ProcessorOptions {
   replace: (code: string) => string
 }
 
-export interface RecursiveDirective extends _Directive {
+export interface RecursiveDirective extends BaseDirective {
   nested: true
   pattern: {
     start: string | RegExp
@@ -43,20 +42,21 @@ export interface RecursiveDirective extends _Directive {
   processor(options: RecursiveProcessorOptions): string
 }
 
-export interface NormalDirective extends _Directive {
+export interface NormalDirective extends BaseDirective {
   nested?: false
   pattern: string | RegExp
   processor(options: NormalProcessorOptions): ReplacementValue
 }
 
 export type Directive = RecursiveDirective | NormalDirective
+export type FunctionDirective = ((ctx: DirectiveContext) => Directive)
 export type Plugin = Directive
 
 export type DirectiveContext = Context
 
 export interface Options {
   cwd: string
-  directives: (Directive | ((ctx: DirectiveContext) => Directive))[]
+  directives: Directive[] | FunctionDirective[]
   include: FilterPattern
   exclude: FilterPattern
 }
