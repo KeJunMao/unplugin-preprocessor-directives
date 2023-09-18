@@ -18,7 +18,16 @@
     "vite",
     "webpack",
     "rollup",
-    "transform"
+    "rspack",
+    "transform",
+    "vite-plugin",
+    "webpack-plugin",
+    "rollup-plugin",
+    "esbuild-plugin",
+    "rspack-plugin",
+    "nuxt-plugin",
+    "directives",
+    "preprocessor"
   ],
   "exports": {
     ".": {
@@ -45,6 +54,11 @@
       "types": "./dist/esbuild.d.ts",
       "import": "./dist/esbuild.js",
       "require": "./dist/esbuild.cjs"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.ts",
+      "import": "./dist/rspack.js",
+      "require": "./dist/rspack.cjs"
     },
     "./nuxt": {
       "types": "./dist/nuxt.d.ts",
@@ -88,6 +102,7 @@
     "@nuxt/schema": "^3",
     "esbuild": "*",
     "rollup": "^3",
+    "rspack": "*",
     "vite": ">=3",
     "webpack": "^4 || ^5"
   },
@@ -99,6 +114,9 @@
       "optional": true
     },
     "vite": {
+      "optional": true
+    },
+    "rspack": {
       "optional": true
     },
     "esbuild": {

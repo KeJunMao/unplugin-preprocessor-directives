@@ -113,6 +113,19 @@ build({
 
 <br></details>
 
+<details>
+<summary>Rspack (⚠️ 实验性)</summary><br>
+
+```ts
+// rspack.config.js
+module.exports = {
+  plugins: [
+    require('unplugin-preprocessor-directives/rspack')({ /* options */ }),
+  ],
+}
+```
+
+<br></details>
 
 ## 使用
 
