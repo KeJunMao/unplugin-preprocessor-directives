@@ -45,6 +45,7 @@ export class Context {
   env: Record<string, string>
   directives: Directive[] = []
   logger: Logger
+  directiveLoggers: Record<string, Logger>
   filter: (id: unknown) => boolean
   constructor({ cwd = process.cwd(), directives = [], exclude = [/[\\/]node_modules[\\/]/, /[\\/]\.git[\\/]/], include = ['**/*'] }: UserOptions = {}) {
     this.cwd = cwd
@@ -66,6 +67,12 @@ export class Context {
     this.logger = createLogger(undefined, {
       prefix: 'unplugin-preprocessor-directives',
     })
+    this.directiveLoggers = this.directives.reduce((acc, directive) => {
+      acc[directive.name] = createLogger(undefined, {
+        prefix: `unplugin-preprocessor-directives-${directive.name}`,
+      })
+      return acc
+    }, {} as Record<string, Logger>)
 
     this.filter = createFilter(include, exclude)
   }
@@ -156,19 +163,24 @@ export class Context {
       const filter = createFilter(include, exclude)
       if (!filter(id))
         return acc
-
-      acc = directive.nested
-        ? this.replaceRecursive({
-          code,
-          id,
-          directive: directive as RecursiveDirective,
-        })
-        : this.replace({
-          code: acc,
-          id,
-          directive: directive as NormalDirective,
-        })
-      return acc
+      try {
+        acc = directive.nested
+          ? this.replaceRecursive({
+            code,
+            id,
+            directive: directive as RecursiveDirective,
+          })
+          : this.replace({
+            code: acc,
+            id,
+            directive: directive as NormalDirective,
+          })
+        return acc
+      }
+      catch (error: any) {
+        this.directiveLoggers[directive.name].error(error)
+        return acc
+      }
     }, code)
     if (data !== code)
       source.overwrite(0, source.length(), data)
