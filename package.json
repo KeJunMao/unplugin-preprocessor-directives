@@ -100,9 +100,9 @@
   "peerDependencies": {
     "@nuxt/kit": "^3",
     "@nuxt/schema": "^3",
+    "@rspack/core": "*",
     "esbuild": "*",
     "rollup": "^3",
-    "@rspack/core": "*",
     "vite": ">=3",
     "webpack": "^4 || ^5"
   },
