@@ -2,7 +2,7 @@ import { relative } from 'node:path'
 import type { NamedGroupsArray } from 'xregexp'
 import { defineDirective } from '../directive'
 
-export default defineDirective({
+export default defineDirective<undefined>(() => ({
   nested: false,
   name: '#error',
   pattern: /.*?#(?<directive>(?:warning)|(?:error)|(?:info))\s*(?<message>[\u4E00-\u9FA5 \t\w]*).*?$/gm,
@@ -20,4 +20,4 @@ export default defineDirective({
       return ''
     }
   },
-})
+}))

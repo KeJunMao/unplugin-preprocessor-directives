@@ -1,7 +1,9 @@
-import type { Directive, FunctionDirective } from '../types'
+import type { DirectiveFactory } from '../types'
 
-export function defineDirective(
-  directive: Directive | FunctionDirective,
+export function defineDirective<UserOptions>(
+  factory: DirectiveFactory<UserOptions>,
 ) {
-  return directive
+  return (userOptions?: UserOptions) => {
+    return factory(userOptions!)
+  }
 }

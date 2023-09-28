@@ -206,11 +206,11 @@ Taking the built-in directive as an example:
 ```ts
 /** @see https://xregexp.com/ */
 import type { NamedGroupsArray } from 'xregexp'
-import { defineDirective } from 'unplugin-preprocessor-directives'
+import { defineDirective } from '../directive'
 
-export default defineDirective({
-  name: '#define',
+export default defineDirective<undefined>(() => ({
   nested: false,
+  name: '#define',
   pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
   processor({ ctx }) {
     return (...args) => {
@@ -225,7 +225,7 @@ export default defineDirective({
       return ''
     }
   },
-})
+}))
 ```
 
 ### `name: string`

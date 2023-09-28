@@ -62,3 +62,5 @@ export interface Options {
 }
 
 export interface UserOptions extends Partial<Options> { }
+
+export type DirectiveFactory<UserOptions> = (options: UserOptions) => FunctionDirective | Directive

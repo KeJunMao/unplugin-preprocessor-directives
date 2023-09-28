@@ -1,7 +1,7 @@
 import type { NamedGroupsArray } from 'xregexp'
 import { defineDirective } from '../directive'
 
-export default defineDirective({
+export default defineDirective<undefined>(() => ({
   nested: false,
   name: '#define',
   pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
@@ -18,4 +18,4 @@ export default defineDirective({
       return ''
     }
   },
-})
+}))

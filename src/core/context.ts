@@ -56,13 +56,17 @@ export class Context {
       '',
     )
 
+    if (directives.length === 0) {
+      directives = [...builtinDirectives.map(v =>
+        typeof v === 'function' ? v(this) : v,
+      )]
+    }
+
     const [preDirectives, normalDirectives, postDirectives] = sortUserDirectives(directives.map(v =>
       typeof v === 'function' ? v(this) : v,
     ))
 
-    this.directives = [...builtinDirectives.map(v =>
-      typeof v === 'function' ? v(this) : v,
-    ), ...preDirectives, ...normalDirectives, ...postDirectives]
+    this.directives = [...preDirectives, ...normalDirectives, ...postDirectives]
 
     this.logger = createLogger(undefined, {
       prefix: 'unplugin-preprocessor-directives',

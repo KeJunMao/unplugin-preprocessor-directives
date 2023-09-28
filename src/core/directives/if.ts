@@ -25,7 +25,7 @@ function resolveConditional(test: string, env = process.env) {
   }
 }
 
-export default defineDirective({
+export default defineDirective<undefined>(() => ({
   name: '#if',
   nested: true,
   pattern: {
@@ -53,4 +53,4 @@ export default defineDirective({
     }
     return ''
   },
-})
+}))
