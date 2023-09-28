@@ -56,7 +56,7 @@ export type DirectiveContext = Context
 
 export interface Options {
   cwd: string
-  directives: Directive[] | FunctionDirective[]
+  directives: (Directive | FunctionDirective)[]
   include: FilterPattern
   exclude: FilterPattern
 }

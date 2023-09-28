@@ -1,7 +1,7 @@
 import process from 'node:process'
 import { defineDirective } from '../directive'
 
-function resolveConditional(test: string, env = process.env) {
+export function resolveConditional(test: string, env = process.env) {
   test = test || 'true'
   test = test.trim()
   test = test.replace(/([^=!])=([^=])/g, '$1==$2')
