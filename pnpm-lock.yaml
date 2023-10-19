@@ -101,12 +101,12 @@ importers:
   examples/vue-cli:
     dependencies:
       vue:
-        specifier: ^3.2.13
+        specifier: ^3.3.4
         version: 3.3.4
     devDependencies:
       '@vue/cli-service':
-        specifier: ~5.0.0
-        version: 5.0.1(esbuild@0.18.20)(vue@3.3.4)
+        specifier: ~5.0.8
+        version: 5.0.8(esbuild@0.18.20)(vue@3.3.4)
       unplugin-preprocessor-directives:
         specifier: workspace:*
         version: link:../..
@@ -1715,27 +1715,27 @@ packages:
     resolution: {integrity: sha512-KmtievE/B4kcXp6SuM2gzsnSd8WebkQpg3XaB6GmFh1BJGRqa1UiW9up7L/Q67uOdTigHxr5Ar2lZms4RcDjwQ==}
     dev: true
 
-  /@vue/cli-plugin-router@5.0.8(@vue/cli-service@5.0.1):
+  /@vue/cli-plugin-router@5.0.8(@vue/cli-service@5.0.8):
     resolution: {integrity: sha512-Gmv4dsGdAsWPqVijz3Ux2OS2HkMrWi1ENj2cYL75nUeL+Xj5HEstSqdtfZ0b1q9NCce+BFB6QnHfTBXc/fCvMg==}
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      '@vue/cli-service': 5.0.1(esbuild@0.18.20)(vue@3.3.4)
+      '@vue/cli-service': 5.0.8(esbuild@0.18.20)(vue@3.3.4)
       '@vue/cli-shared-utils': 5.0.8
     transitivePeerDependencies:
       - encoding
     dev: true
 
-  /@vue/cli-plugin-vuex@5.0.8(@vue/cli-service@5.0.1):
+  /@vue/cli-plugin-vuex@5.0.8(@vue/cli-service@5.0.8):
     resolution: {integrity: sha512-HSYWPqrunRE5ZZs8kVwiY6oWcn95qf/OQabwLfprhdpFWAGtLStShjsGED2aDpSSeGAskQETrtR/5h7VqgIlBA==}
     peerDependencies:
       '@vue/cli-service': ^3.0.0 || ^4.0.0 || ^5.0.0-0
     dependencies:
-      '@vue/cli-service': 5.0.1(esbuild@0.18.20)(vue@3.3.4)
+      '@vue/cli-service': 5.0.8(esbuild@0.18.20)(vue@3.3.4)
     dev: true
 
-  /@vue/cli-service@5.0.1(esbuild@0.18.20)(vue@3.3.4):
-    resolution: {integrity: sha512-lhTW1d8waZv1VaRSvhE5pWWfkdmAgRTRSluDfyxkehZHMAWi//rd7a9zppN3k9Zr4X3oYVii+u7wR/RcTlr9cQ==}
+  /@vue/cli-service@5.0.8(esbuild@0.18.20)(vue@3.3.4):
+    resolution: {integrity: sha512-nV7tYQLe7YsTtzFrfOMIHc5N2hp5lHG2rpYr0aNja9rNljdgcPZLyQRb2YRivTHqTv7lI962UXFURcpStHgyFw==}
     engines: {node: ^12.0.0 || >= 14.0.0}
     hasBin: true
     peerDependencies:
@@ -1770,8 +1770,8 @@ packages:
       '@soda/get-current-script': 1.0.2
       '@types/minimist': 1.2.4
       '@vue/cli-overlay': 5.0.8
-      '@vue/cli-plugin-router': 5.0.8(@vue/cli-service@5.0.1)
-      '@vue/cli-plugin-vuex': 5.0.8(@vue/cli-service@5.0.1)
+      '@vue/cli-plugin-router': 5.0.8(@vue/cli-service@5.0.8)
+      '@vue/cli-plugin-vuex': 5.0.8(@vue/cli-service@5.0.8)
       '@vue/cli-shared-utils': 5.0.8
       '@vue/component-compiler-utils': 3.3.0
       '@vue/vue-loader-v15': /vue-loader@15.11.1(css-loader@6.8.1)(webpack@5.88.2)
@@ -2541,7 +2541,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001522
+      caniuse-lite: 1.0.30001551
       electron-to-chromium: 1.4.498
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
@@ -2659,7 +2659,7 @@ packages:
     resolution: {integrity: sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==}
     dependencies:
       browserslist: 4.21.10
-      caniuse-lite: 1.0.30001522
+      caniuse-lite: 1.0.30001551
       lodash.memoize: 4.1.2
       lodash.uniq: 4.5.0
     dev: true
@@ -2668,12 +2668,8 @@ packages:
     resolution: {integrity: sha512-Ue55jHkR/s4r00FLNiX+hGMMuwml/QGqqzVeMQ5thUewznU2EdULFvI3JR7JJid6OrjJNfFvHY2G2dIjmRaDDQ==}
     dev: true
 
-  /caniuse-lite@1.0.30001522:
-    resolution: {integrity: sha512-TKiyTVZxJGhsTszLuzb+6vUZSjVOAhClszBr2Ta2k9IwtNBT/4dzmL6aywt0HCgEZlmwJzXJd8yNiob6HgwTRg==}
-
   /caniuse-lite@1.0.30001551:
     resolution: {integrity: sha512-vtBAez47BoGMMzlbYhfXrMV1kvRF2WP/lqiMuDu1Sb4EE4LKEgjopFDSRtZfdVnslNRpOqV/woE+Xgrwj6VQlg==}
-    dev: true
 
   /case-sensitive-paths-webpack-plugin@2.4.0:
     resolution: {integrity: sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw==}
