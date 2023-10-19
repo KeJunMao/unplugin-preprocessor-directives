@@ -10,6 +10,9 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   return {
     name: 'unplugin-preprocessor-directives',
     enforce: 'pre',
+    transformInclude(id) {
+      return ctx.filter(id)
+    },
     transform: (code, id) => ctx.transform(code, id),
     vite: {
       configResolved(config) {
