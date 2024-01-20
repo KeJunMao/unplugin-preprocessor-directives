@@ -25,79 +25,81 @@ export function resolveConditional(test: string, env = process.env) {
   }
 }
 
-export const ifDirective = defineDirective<IfToken, IfStatement>({
-  lex(comment) {
-    const match = comment.match(/#(if|else|elif|endif)\s*(.*)/)
-    if (match) {
-      return {
-        type: match[1],
-        value: match[2]?.trim(),
-      } as IfToken
-    }
-  },
-  parse(token) {
-    if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {
-      const node: IfStatement = {
-        type: 'IfStatement',
-        test: token.value,
-        consequent: [],
-        alternate: [],
-        kind: token.type,
+export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
+  return {
+    lex(comment) {
+      const match = comment.match(/#(if|else|elif|endif)\s*(.*)/)
+      if (match) {
+        return {
+          type: match[1],
+          value: match[2]?.trim(),
+        } as IfToken
       }
-      this.current++
-
-      while (this.current < this.tokens.length) {
-        const nextToken = this.tokens[this.current]
-
-        if (nextToken.type === 'elif' || nextToken.type === 'else') {
-          node.alternate.push(this.walk())
-          break
+    },
+    parse(token) {
+      if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {
+        const node: IfStatement = {
+          type: 'IfStatement',
+          test: token.value,
+          consequent: [],
+          alternate: [],
+          kind: token.type,
         }
-        else if (nextToken.type === 'endif') {
-          this.current++ // Skip 'endif'
-          break
+        this.current++
+
+        while (this.current < this.tokens.length) {
+          const nextToken = this.tokens[this.current]
+
+          if (nextToken.type === 'elif' || nextToken.type === 'else') {
+            node.alternate.push(this.walk())
+            break
+          }
+          else if (nextToken.type === 'endif') {
+            this.current++ // Skip 'endif'
+            break
+          }
+          else {
+            node.consequent.push(this.walk())
+          }
+        }
+        return node
+      }
+    },
+    transform(node) {
+      if (node.type === 'IfStatement') {
+        if (resolveConditional(node.test, context.env)) {
+          return {
+            type: 'Program',
+            body: node.consequent.map(this.walk.bind(this)).filter(n => n != null)
+          };
+        } else if (node.alternate) {
+          return {
+            type: 'Program',
+            body: node.alternate.map(this.walk.bind(this)).filter(n => n != null)
+          };
+        }
+      }
+    },
+    generate(node) {
+      if (node.type === 'IfStatement') {
+        let code = ''
+        if (node.kind === 'else')
+          code = '// #else'
+
+        else
+          code = `// #${node.kind} ${node.test}`
+
+        const consequentCode = node.consequent.map(this.walk.bind(this)).join('\n')
+        code += `\n${consequentCode}`
+        if (node.alternate.length) {
+          const alternateCode = node.alternate.map(this.walk.bind(this)).join('\n')
+          code += `\n${alternateCode}`
         }
         else {
-          node.consequent.push(this.walk())
+          code += '\n// #endif'
         }
+        return code
       }
-      return node
-    }
-  },
-  transform(node) {
-    if (node.type === 'IfStatement') {
-      if (resolveConditional(node.test)) {
-        return {
-          type: 'Program',
-          body: node.consequent.map(this.walk.bind(this)).filter(n => n != null)
-        };
-      } else if (node.alternate) {
-        return {
-          type: 'Program',
-          body: node.alternate.map(this.walk.bind(this)).filter(n => n != null)
-        };
-      }
-    }
-  },
-  generate(node) {
-    if (node.type === 'IfStatement') {
-      let code = ''
-      if (node.kind === 'else')
-        code = '// #else'
-
-      else
-        code = `// #${node.kind} ${node.test}`
-
-      const consequentCode = node.consequent.map(this.walk.bind(this)).join('\n')
-      code += `\n${consequentCode}`
-      if (node.alternate.length) {
-        const alternateCode = node.alternate.map(this.walk.bind(this)).join('\n')
-        code += `\n${alternateCode}`
-      }
-      else {
-        code += '\n// #endif'
-      }
-      return code
     }
   }
 })
