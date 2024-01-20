@@ -1,10 +1,11 @@
-import { createFilter } from 'vite'
+import { createFilter, createLogger, loadEnv } from 'vite'
 import { UserOptions } from '../../types'
 import { Lex, ObjectDirective, Parse, Transform } from '../types'
 import { Generator } from './generator'
 import { Lexer } from './lexer'
 import { Parser } from './parser'
 import { Transformer } from './transformer'
+import { Logger } from 'vite'
 export * from './lexer'
 export * from './parser'
 
@@ -46,6 +47,7 @@ export class Context {
   transforms: Transform[]
   filter: (id: string) => boolean
   env: Record<string, any> = process.env
+  logger: Logger
   constructor(options?: UserOptions) {
     this.options = resolveOptions(options)
     this.directives = sortUserDirectives(this.options.directives.map(d => typeof d === 'function' ? d(this) : d)).flat()
@@ -53,6 +55,18 @@ export class Context {
     this.parsers = this.directives.map(d => d.parse)
     this.transforms = this.directives.map(d => d.transform)
     this.filter = createFilter(this.options.include, this.options.exclude)
+    this.logger = createLogger(undefined, {
+      prefix: 'unplugin-preprocessor-directives',
+    })
+    this.env = this.loadEnv()
+  }
+
+  loadEnv(mode = process.env.NODE_ENV || 'development') {
+    return loadEnv(
+      mode,
+      this.options.cwd,
+      '',
+    )
   }
 
   transform(code: string, id: string) {

@@ -3,12 +3,13 @@ import { createUnplugin } from 'unplugin'
 import type { UserOptions } from '../types'
 import { Context } from './context'
 import { ifDirective } from './directives'
+import { defineAndUndefDirective } from './directives'
 
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
 ) => {
   // @ts-expect-error ignore
-  const ctx = new Context({ ...options, directives: [ifDirective, ...options?.directives ?? []] })
+  const ctx = new Context({ ...options, directives: [ifDirective, defineAndUndefDirective, ...options?.directives ?? []] })
   return {
     name: 'unplugin-preprocessor-directives',
     enforce: 'pre',
@@ -18,7 +19,10 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
     },
     vite: {
       configResolved(config) {
-        ctx.env = { ...ctx.env, ...config.env }
+        ctx.env = {
+          ...ctx.loadEnv(config.mode),
+          ...config.env
+        }
       },
     },
   }
