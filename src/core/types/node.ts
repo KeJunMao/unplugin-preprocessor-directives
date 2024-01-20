@@ -10,11 +10,22 @@ export interface CodeStatement extends SimpleNode {
   value: string
 }
 
-
 export interface IfStatement extends SimpleNode {
   type: 'IfStatement',
   test: string,
   consequent: SimpleNode[],
   alternate: SimpleNode[],
   kind: IfToken['type']
+}
+
+export interface DefineStatement extends SimpleNode {
+  type: 'DefineStatement',
+  kind: 'define' | 'undef',
+  name: string
+}
+
+export interface MessageStatement extends SimpleNode {
+  type: 'MessageStatement',
+  kind: 'error' | 'warning' | 'info',
+  value: string
 }

@@ -17,7 +17,7 @@ export class Generator {
       if (generated) return generated
     }
 
-    throw new Error(`Unknown node type: ${node.type}`);
+    throw new Error(`Generator: Unknown node type: ${node.type}`);
   }
 
   private generate(): string {

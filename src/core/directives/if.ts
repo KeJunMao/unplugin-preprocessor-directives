@@ -1,5 +1,6 @@
 import { defineDirective } from '../directive'
 import { IfStatement, IfToken } from '../types'
+import { simpleMatchToken } from '../utils'
 
 export function resolveConditional(test: string, env = process.env) {
   test = test || 'true'
@@ -28,13 +29,7 @@ export function resolveConditional(test: string, env = process.env) {
 export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
   return {
     lex(comment) {
-      const match = comment.match(/#(if|else|elif|endif)\s*(.*)/)
-      if (match) {
-        return {
-          type: match[1],
-          value: match[2]?.trim(),
-        } as IfToken
-      }
+      return simpleMatchToken(comment, /#(if|else|elif|endif)\s*(.*)/)
     },
     parse(token) {
       if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {

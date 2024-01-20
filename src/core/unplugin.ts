@@ -2,14 +2,13 @@ import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
 import type { UserOptions } from '../types'
 import { Context } from './context'
-import { ifDirective } from './directives'
-import { defineAndUndefDirective } from './directives'
+import { ifDirective, theDefineDirective, MessageDirective } from './directives'
 
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
 ) => {
   // @ts-expect-error ignore
-  const ctx = new Context({ ...options, directives: [ifDirective, defineAndUndefDirective, ...options?.directives ?? []] })
+  const ctx = new Context({ ...options, directives: [ifDirective, theDefineDirective, MessageDirective, ...options?.directives ?? []] })
   return {
     name: 'unplugin-preprocessor-directives',
     enforce: 'pre',

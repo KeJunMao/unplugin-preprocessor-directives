@@ -1,7 +1,8 @@
-import { CodeStatement, Parse, ProgramNode, SimpleToken } from '../types'
+import { CodeStatement, Parse, SimpleToken } from '../types'
+import { createProgramNode } from '../utils'
 
 export class Parser {
-  ast: ProgramNode = { type: 'Program', body: [] }
+  ast = createProgramNode()
   current = 0
   constructor(public tokens: SimpleToken[], public parsers: Parse[] = []) {
   }
@@ -21,7 +22,7 @@ export class Parser {
       }
     }
 
-    throw new Error(`Unknown token type: ${token.type}`)
+    throw new Error(`Parser: Unknown token type: ${token.type}`)
   }
 
   private parse() {

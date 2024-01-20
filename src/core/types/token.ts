@@ -8,3 +8,12 @@ export interface IfToken extends SimpleToken {
   type: 'if' | 'else' | 'elif' | 'endif'
   value: string
 }
+export interface DefineToken extends SimpleToken {
+  type: 'define' | 'undef'
+  value: string
+}
+
+export interface MessageToken extends SimpleToken {
+  type: 'error' | 'warning' | 'info'
+  value: string
+}

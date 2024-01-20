@@ -21,7 +21,7 @@ export class Transformer {
       if (transformed) return transformed
     }
 
-    throw new Error(`Unknown node type: ${node.type}`);
+    throw new Error(`Transformer: Unknown node type: ${node.type}`);
   }
 
   private transform(): SimpleNode | void {
