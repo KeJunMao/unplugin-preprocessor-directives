@@ -1,9 +1,0 @@
-body {
-  /* #if !DEV */
-  content: "!DEV";
-  /* #elif TEST */
-  content: "TEST";
-  /* #else */
-  content: "!DEV else";
-  /* #endif */
-}

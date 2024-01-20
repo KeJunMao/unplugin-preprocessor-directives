@@ -1,7 +1,0 @@
-body {
-  /* #if !DEV */
-  content: "!DEV";
-  /* #else */
-  content: "!DEV else";
-  /* #endif */
-}
