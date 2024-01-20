@@ -1,1 +1,1 @@
-export * as IfDirective from './if'
+export * from './if'

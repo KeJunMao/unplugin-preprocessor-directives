@@ -1,7 +1,10 @@
+import { createFilter } from 'vite'
 import { UserOptions } from '../../types'
-import { Lex, ObjectDirective, Parse } from '../types'
+import { Lex, ObjectDirective, Parse, Transform } from '../types'
+import { Generator } from './generator'
 import { Lexer } from './lexer'
 import { Parser } from './parser'
+import { Transformer } from './transformer'
 export * from './lexer'
 export * from './parser'
 
@@ -40,17 +43,26 @@ export class Context {
   directives: ObjectDirective[]
   lexers: Lex[]
   parsers: Parse[]
+  transforms: Transform[]
+  filter: (id: string) => boolean
+  env: Record<string, any> = process.env
   constructor(options?: UserOptions) {
     this.options = resolveOptions(options)
     this.directives = sortUserDirectives(this.options.directives.map(d => typeof d === 'function' ? d(this) : d)).flat()
     this.lexers = this.directives.map(d => d.lex)
     this.parsers = this.directives.map(d => d.parse)
+    this.transforms = this.directives.map(d => d.transform)
+    this.filter = createFilter(this.options.include, this.options.exclude)
   }
 
   transform(code: string, id: string) {
     const tokens = Lexer.lex(code, this.lexers)
     const ast = Parser.parse(tokens, this.parsers)
-    console.log(ast);
 
+    const transformed = Transformer.transform(ast, this.transforms)
+    if (transformed) {
+      const generated = Generator.generate(transformed)
+      return generated
+    }
   }
 }

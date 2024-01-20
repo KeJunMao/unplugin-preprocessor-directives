@@ -1,4 +1,4 @@
-import { CodeToken, IfToken, Lex, SimpleToken } from '../types'
+import { CodeToken, Lex, SimpleToken } from '../types'
 export function isComment(line: string) {
   return (
     // JS comment
@@ -11,13 +11,9 @@ export function isComment(line: string) {
 }
 
 export class Lexer {
-  code: string
   current = 0
   tokens: SimpleToken[] = []
-  lexers: Lex[]
-  constructor(code: string, lexers: Lex[] = []) {
-    this.code = code
-    this.lexers = lexers
+  constructor(public code: string, public lexers: Lex[] = []) {
   }
 
   private lex() {
@@ -38,7 +34,6 @@ export class Lexer {
             this.current = endIndex
             continue scanner
           }
-
         }
       }
       this.tokens.push({

@@ -3,11 +3,7 @@ import { CodeStatement, Parse, ProgramNode, SimpleToken } from '../types'
 export class Parser {
   ast: ProgramNode = { type: 'Program', body: [] }
   current = 0
-  tokens: SimpleToken[]
-  parsers: Parse[]
-  constructor(tokens: SimpleToken[], parsers: Parse[] = []) {
-    this.tokens = tokens
-    this.parsers = parsers
+  constructor(public tokens: SimpleToken[], public parsers: Parse[] = []) {
   }
 
   walk() {
