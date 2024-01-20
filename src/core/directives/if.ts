@@ -1,56 +1,43 @@
-import process from 'node:process'
 import { defineDirective } from '../directive'
+import { IfStatement, IfToken } from '../types'
 
-export function resolveConditional(test: string, env = process.env) {
-  test = test || 'true'
-  test = test.trim()
-  test = test.replace(/([^=!])=([^=])/g, '$1==$2')
-  // eslint-disable-next-line no-new-func
-  const evaluateCondition = new Function('env', `with (env){ return ( ${test} ) }`)
-
-  try {
-    return evaluateCondition(env)
-  }
-  catch (error) {
-    if (error instanceof ReferenceError) {
-      const match = /(\w*?) is not defined/g.exec(error.message)
-      if (match && match[1]) {
-        const name = match[1]
-        // @ts-expect-error ignore
-        env[name] = false
-        return resolveConditional(test, env)
-      }
+export default defineDirective<IfToken, IfStatement>({
+  lex(comment: string) {
+    const match = comment.match(/#(if|else|elif|endif)\s*(.*)/)
+    if (match) {
+      return {
+        type: match[1],
+        value: match[2]?.trim(),
+      } as IfToken
     }
-    return false
-  }
-}
-
-export default defineDirective<undefined>(() => ({
-  name: '#if',
-  nested: true,
-  pattern: {
-    start: /.*?#if\s([\w !=&|()'"]*).*[\r\n]{1,2}/gm,
-    end: /\s*.*?#endif.*?$/gm,
   },
-  processor({ matchGroup, replace, ctx }) {
-    const code = replace(matchGroup.match)
-    const regex = /.*?(#el(?:if|se))\s?([\w !=&|()'"]*).*[\r\n]{1,2}/gm
-    const codeBlock = [
-      '#if',
-      matchGroup.left?.[1] || '',
-      ...ctx.XRegExp.split(code, regex),
-    ].map(v => v.trim())
+  parse(token) {
+    if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {
+      const node: IfStatement = {
+        type: 'IfStatement',
+        test: token.value,
+        consequent: [],
+        alternate: [],
+        kind: token.type,
+      }
+      this.current++
 
-    while (codeBlock.length) {
-      const [variant, conditional, block] = codeBlock.splice(0, 3)
-      if (variant === '#if' || variant === '#elif') {
-        if (resolveConditional(conditional, ctx.env))
-          return block
+      while (this.current < this.tokens.length) {
+        const nextToken = this.tokens[this.current]
+
+        if (nextToken.type === 'elif' || nextToken.type === 'else') {
+          node.alternate.push(this.walk())
+          break
+        }
+        else if (nextToken.type === 'endif') {
+          this.current++ // Skip 'endif'
+          break
+        }
+        else {
+          node.consequent.push(this.walk())
+        }
       }
-      else if (variant === '#else') {
-        return block
-      }
+      return node
     }
-    return ''
   },
-}))
+})

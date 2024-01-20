@@ -1,99 +1,98 @@
-import { resolve } from 'node:path'
-import fs from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import { Context } from '../../src/core/context'
+import _IfDirective from '../../src/core/directives/if'
+import { IfToken, Lexer, ObjectDirective, Parser, SimpleToken } from '../../src'
 
-describe('css', () => {
-  const root = resolve(__dirname, '../fixtures/css')
-  const ctx = new Context({
-    cwd: root,
-  })
-  function transform(fileName: string) {
-    const filePath = resolve(root, fileName)
-    const code = fs.readFileSync(filePath, { encoding: 'utf-8' })
-    return ctx.transform(code, filePath)?.code
-  }
+describe('IfDirective', () => {
+  const IfDirective = _IfDirective as ObjectDirective
+  it('should lex if token', () => {
+    const comment = '// #if condition'
+    const expectedToken: SimpleToken[] = [{
+      type: 'if',
+      value: 'condition',
+    }]
 
-  it('if', () => {
-    expect(transform('if.css')).toMatchSnapshot()
-  })
+    const token = Lexer.lex(comment, [IfDirective.lex])
 
-  it('else', () => {
-    expect(transform('else.css')).toMatchSnapshot()
+    expect(token).toEqual(expectedToken)
   })
 
-  it('elif', () => {
-    expect(transform('elif.css')).toMatchSnapshot()
+  it('should lex else token', () => {
+    const comment = '// #else'
+    const expectedToken: SimpleToken[] = [{
+      type: 'else',
+      value: '',
+    }]
+
+    const token = Lexer.lex(comment, [IfDirective.lex])
+
+    expect(token).toEqual(expectedToken)
   })
 
-  it('nested', () => {
-    expect(transform('nested.css')).toMatchSnapshot()
+  it('should lex elif token', () => {
+    const comment = '// #elif condition'
+    const expectedToken: SimpleToken[] = [{
+      type: 'elif',
+      value: 'condition',
+    }]
+
+    const token = Lexer.lex(comment, [IfDirective.lex])
+
+    expect(token).toEqual(expectedToken)
   })
 
-  it('empty', () => {
-    expect(transform('empty.css')).toBe(undefined)
-  })
-})
+  it('should lex endif token', () => {
+    const comment = '// #endif'
+    const expectedToken: SimpleToken[] = [
+      {
+        type: 'endif',
+        value: '',
+      }
+    ]
 
-describe('js', () => {
-  const root = resolve(__dirname, '../fixtures/js')
-  const ctx = new Context({
-    cwd: root,
-  })
-  function transform(fileName: string) {
-    const filePath = resolve(root, fileName)
-    const code = fs.readFileSync(filePath, { encoding: 'utf-8' })
-    return ctx.transform(code, filePath)?.code
-  }
+    const token = Lexer.lex(comment, [IfDirective.lex])
 
-  it('if', () => {
-    expect(transform('if.js')).toMatchSnapshot()
+    expect(token).toEqual(expectedToken)
   })
 
-  it('else', () => {
-    expect(transform('else.js')).toMatchSnapshot()
-  })
+  it('should parse if statement', () => {
+    const tokens: IfToken[] = [
+      { type: 'if', value: 'condition' },
+      { type: 'elif', value: 'condition2' },
+      { type: 'else', value: '' },
+      { type: 'endif', value: '' },
+    ]
 
-  it('elif', () => {
-    expect(transform('elif.js')).toMatchSnapshot()
-  })
+    const statement = Parser.parse(tokens, [IfDirective.parse])
 
-  it('nested', () => {
-    expect(transform('nested.js')).toMatchSnapshot()
-  })
-
-  it('empty', () => {
-    expect(transform('empty.js')).toBe(undefined)
-  })
-})
-describe('html', () => {
-  const root = resolve(__dirname, '../fixtures/html')
-  const ctx = new Context({
-    cwd: root,
-  })
-  function transform(fileName: string) {
-    const filePath = resolve(root, fileName)
-    const code = fs.readFileSync(filePath, { encoding: 'utf-8' })
-    return ctx.transform(code, filePath)?.code
-  }
-
-  it('if', () => {
-    expect(transform('if.html')).toMatchSnapshot()
-  })
-
-  it('else', () => {
-    expect(transform('else.html')).toMatchSnapshot()
-  })
-
-  it('elif', () => {
-    expect(transform('elif.html')).toMatchSnapshot()
-  })
-
-  it('nested', () => {
-    expect(transform('nested.html')).toMatchSnapshot()
-  })
-
-  it('empty', () => {
-    expect(transform('empty.html')).toBe(undefined)
+    expect(statement).toMatchInlineSnapshot(`
+      {
+        "body": [
+          {
+            "alternate": [
+              {
+                "alternate": [
+                  {
+                    "alternate": [],
+                    "consequent": [],
+                    "kind": "else",
+                    "test": "",
+                    "type": "IfStatement",
+                  },
+                ],
+                "consequent": [],
+                "kind": "elif",
+                "test": "condition2",
+                "type": "IfStatement",
+              },
+            ],
+            "consequent": [],
+            "kind": "if",
+            "test": "condition",
+            "type": "IfStatement",
+          },
+        ],
+        "type": "Program",
+      }
+    `)
   })
 })
