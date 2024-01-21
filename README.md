@@ -146,9 +146,6 @@ console.log('Verbose output version')
 // #endif
 ```
 
-> [!WARNING]
-> `#define` and `#undef` are Hoisting, like `var` in JavaScript.
-
 ### Conditional compilation
 
 - `#if`: Opens a conditional compilation, where code is compiled only if the specified symbol is defined and evaluated to true.
@@ -204,33 +201,43 @@ You can used `defineDirective` to define your own directive.
 Taking the built-in directive as an example:
 
 ```ts
-/** @see https://xregexp.com/ */
-import type { NamedGroupsArray } from 'xregexp'
-import { defineDirective } from '../directive'
-
-export default defineDirective<undefined>(() => ({
-  nested: false,
-  name: '#define',
-  pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
-  processor({ ctx }) {
-    return (...args) => {
-      const group = args[args.length - 1] as NamedGroupsArray
-      if (group.directive === 'define')
-        // @ts-expect-error ignore
-        ctx.env[group.key] = true
-
-      else if (group.directive === 'undef')
-        delete ctx.env[group.key]
-
-      return ''
+export default defineDirective<DefineToken, DefineStatement>((context) => ({
+  lex(comment) {
+    return simpleMatchToken(comment, /#(define|undef)\s*(.*)/)
+  },
+  parse(token) {
+    if (token.type === 'define' || token.type === 'undef') {
+      this.current++
+      return {
+        type: 'DefineStatement',
+        kind: token.type,
+        name: token.value,
+      }
     }
   },
+  transform(node) {
+    if (node.type === 'DefineStatement') {
+      if (node.kind === 'define') {
+        context.env[node.name] = true
+      }
+      else if (node.kind === 'undef') {
+        context.env[node.name] = false
+      }
+      return createProgramNode()
+    }
+  },
+  generate(node) {
+    if (node.type === 'DefineStatement') {
+      if (node.kind === 'define') {
+        return `#${node.kind} ${node.name}`
+      }
+      else if (node.kind === 'undef') {
+        return `#${node.kind} ${node.name}`
+      }
+    }
+  }
 }))
 ```
-
-### `name: string`
-
-directive name, used to identify the directive in warning and error messages
 
 ### `enforce: 'pre' | 'post'`
 
@@ -238,17 +245,6 @@ Execution priority of directives
 
 - `pre`: Execute as early as possible
 - `post`: Execute as late as possible
-
-### `nested: boolean`
-
-Is it a nested instruction, The default is `false`. If it is `true`, `matchRecursive` will be used internally for replace and recursive calls. Otherwise, `replace` will be used`
-
-### `pattern`
-
-The regular expression of the directive, if it is a nested instruction, needs to specify the `start` and `end` regular expressions
-### `processor`
-
-The processing function of the directive.
 
 [npm-version-src]: https://img.shields.io/npm/v/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-version-href]: https://npmjs.com/package/unplugin-preprocessor-directives

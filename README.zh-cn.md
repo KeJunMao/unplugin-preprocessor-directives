@@ -146,9 +146,6 @@ console.log('Verbose output version')
 // #endif
 ```
 
-> [!WARNING]
-> `#define` 和 `#undef` 是提升的，类似 JavaScript 的 `var`。
-
 ### 条件编译
 
 - `#if`: 打开条件编译，只有当指定的 symbol 被定义并求值为 true 时，代码才会被编译。
@@ -205,33 +202,43 @@ class MyClass {
 以内置指令为例：
 
 ```ts
-/** @see https://xregexp.com/ */
-import type { NamedGroupsArray } from 'xregexp'
-import { defineDirective } from '../directive'
-
-export default defineDirective<undefined>(() => ({
-  nested: false,
-  name: '#define',
-  pattern: /.*?#(?<directive>(?:un)?def(?:ine)?)\s*(?<key>[\w]*)\s/gm,
-  processor({ ctx }) {
-    return (...args) => {
-      const group = args[args.length - 1] as NamedGroupsArray
-      if (group.directive === 'define')
-        // @ts-expect-error ignore
-        ctx.env[group.key] = true
-
-      else if (group.directive === 'undef')
-        delete ctx.env[group.key]
-
-      return ''
+export default defineDirective<DefineToken, DefineStatement>((context) => ({
+  lex(comment) {
+    return simpleMatchToken(comment, /#(define|undef)\s*(.*)/)
+  },
+  parse(token) {
+    if (token.type === 'define' || token.type === 'undef') {
+      this.current++
+      return {
+        type: 'DefineStatement',
+        kind: token.type,
+        name: token.value,
+      }
     }
   },
+  transform(node) {
+    if (node.type === 'DefineStatement') {
+      if (node.kind === 'define') {
+        context.env[node.name] = true
+      }
+      else if (node.kind === 'undef') {
+        context.env[node.name] = false
+      }
+      return createProgramNode()
+    }
+  },
+  generate(node) {
+    if (node.type === 'DefineStatement') {
+      if (node.kind === 'define') {
+        return `#${node.kind} ${node.name}`
+      }
+      else if (node.kind === 'undef') {
+        return `#${node.kind} ${node.name}`
+      }
+    }
+  }
 }))
 ```
-
-### `name: string`
-
-指令的名称，用于在警告和错误消息中标识指令。
 
 ### `enforce: 'pre' | 'post'`
 
@@ -239,19 +246,6 @@ export default defineDirective<undefined>(() => ({
 
 - `pre` 尽可能早执行
 - `post` 尽可能晚执行
-
-### `nested: boolean`
-
-是否为嵌套指令，默认为 `false`，如果为 `true` 在内部将使用 `matchRecursive` 进行 `replace` 并递归调用, 否则使用 `replace`
-
-### `pattern`
-
-指令的正则表达式，如果是嵌套指令，需要指定开始和结束的正则表达式
-
-### `processor`
-
-指令的处理函数。
-
 
 [npm-version-src]: https://img.shields.io/npm/v/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-version-href]: https://npmjs.com/package/unplugin-preprocessor-directives
