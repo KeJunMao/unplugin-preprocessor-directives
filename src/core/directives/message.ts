@@ -1,4 +1,5 @@
-import { MessageStatement, MessageToken, defineDirective } from "..";
+import { defineDirective } from "../directive";
+import { MessageToken, MessageStatement } from "../types";
 import { createProgramNode, simpleMatchToken } from "../utils";
 
 export const MessageDirective = defineDirective<MessageToken, MessageStatement>((context) => ({

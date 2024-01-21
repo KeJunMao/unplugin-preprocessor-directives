@@ -1,4 +1,5 @@
-import { DefineStatement, DefineToken, defineDirective } from "..";
+import { defineDirective } from "../directive";
+import { DefineStatement, DefineToken } from "../types";
 import { createProgramNode, simpleMatchToken } from "../utils";
 
 export const theDefineDirective = defineDirective<DefineToken, DefineStatement>((context) => ({
