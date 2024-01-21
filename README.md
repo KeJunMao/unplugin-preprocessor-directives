@@ -200,40 +200,75 @@ You can used `defineDirective` to define your own directive.
 Taking the built-in directive as an example:
 
 ```ts
-export default defineDirective<DefineToken, DefineStatement>(context => ({
+export const MessageDirective = defineDirective<MessageToken, MessageStatement>(context => ({
   lex(comment) {
-    return simpleMatchToken(comment, /#(define|undef)\s*(.*)/)
+    return simpleMatchToken(comment, /#(error|warning|info)\s*(.*)/)
   },
   parse(token) {
-    if (token.type === 'define' || token.type === 'undef') {
+    if (token.type === 'error' || token.type === 'warning' || token.type === 'info') {
       this.current++
       return {
-        type: 'DefineStatement',
+        type: 'MessageStatement',
         kind: token.type,
-        name: token.value,
+        value: token.value,
       }
     }
   },
   transform(node) {
-    if (node.type === 'DefineStatement') {
-      if (node.kind === 'define')
-        context.env[node.name] = true
-
-      else if (node.kind === 'undef')
-        context.env[node.name] = false
-
+    if (node.type === 'MessageStatement') {
+      switch (node.kind) {
+        case 'error':
+          context.logger.error(node.value, { timestamp: true })
+          break
+        case 'warning':
+          context.logger.warn(node.value, { timestamp: true })
+          break
+        case 'info':
+          context.logger.info(node.value, { timestamp: true })
+          break
+      }
       return createProgramNode()
     }
   },
-  generate(node) {
-    if (node.type === 'DefineStatement') {
-      if (node.kind === 'define')
-        return `#${node.kind} ${node.name}`
-
-      else if (node.kind === 'undef')
-        return `#${node.kind} ${node.name}`
+  generate(node, comment) {
+    if (node.type === 'MessageStatement' && comment)
+      return `${comment.start} #${node.kind} ${node.value} ${comment.end}`
+  },
+}))
+export const MessageDirective = defineDirective<MessageToken, MessageStatement>(context => ({
+  lex(comment) {
+    return simpleMatchToken(comment, /#(error|warning|info)\s*(.*)/)
+  },
+  parse(token) {
+    if (token.type === 'error' || token.type === 'warning' || token.type === 'info') {
+      this.current++
+      return {
+        type: 'MessageStatement',
+        kind: token.type,
+        value: token.value,
+      }
     }
-  }
+  },
+  transform(node) {
+    if (node.type === 'MessageStatement') {
+      switch (node.kind) {
+        case 'error':
+          context.logger.error(node.value, { timestamp: true })
+          break
+        case 'warning':
+          context.logger.warn(node.value, { timestamp: true })
+          break
+        case 'info':
+          context.logger.info(node.value, { timestamp: true })
+          break
+      }
+      return createProgramNode()
+    }
+  },
+  generate(node, comment) {
+    if (node.type === 'MessageStatement' && comment)
+      return `${comment.start} #${node.kind} ${node.value} ${comment.end}`
+  },
 }))
 ```
 
