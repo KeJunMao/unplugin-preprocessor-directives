@@ -7,6 +7,7 @@ export function resolveConditional(test: string, env = process.env) {
   test = test || 'true'
   test = test.trim()
   test = test.replace(/([^=!])=([^=])/g, '$1==$2')
+
   // eslint-disable-next-line no-new-func
   const evaluateCondition = new Function('env', `with (env){ return ( ${test} ) }`)
 
@@ -30,7 +31,7 @@ export function resolveConditional(test: string, env = process.env) {
 export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
   return {
     lex(comment) {
-      return simpleMatchToken(comment, /#(if|else|elif|endif)\s*(.*)/)
+      return simpleMatchToken(comment, /#(if|else|elif|endif)\s?([\w !=&|()'"?:]*).*/)
     },
     parse(token) {
       if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {

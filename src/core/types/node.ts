@@ -21,7 +21,7 @@ export interface IfStatement extends SimpleNode {
 export interface DefineStatement extends SimpleNode {
   type: 'DefineStatement'
   kind: 'define' | 'undef'
-  name: string
+  value: string
 }
 
 export interface MessageStatement extends SimpleNode {
