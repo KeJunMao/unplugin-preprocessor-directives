@@ -53,3 +53,15 @@ console.log('!DEV else')
 console.log('TEST')
 console.log('else')"
 `;
+
+exports[`if > should parse if.jsx, dev = false 1`] = `
+"const Component = () => <div>
+</div>;"
+`;
+
+exports[`if > should parse if.jsx, dev = true 1`] = `
+"const Component = () => <div>
+DEV
+DEV=true
+</div>;"
+`;

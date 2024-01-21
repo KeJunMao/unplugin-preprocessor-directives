@@ -8,6 +8,13 @@ export const comments: Comment[] = [
     end: '',
     regex: /^\/\/\s?(.*)$/,
   },
+  // jsx
+  {
+    type: 'jsx',
+    start: '{/* ',
+    end: ' */}',
+    regex: /^\{\s?\/\*\s?(.*)\s?\*\/\s?\}$/,
+  },
   // css
   {
     type: 'css',
