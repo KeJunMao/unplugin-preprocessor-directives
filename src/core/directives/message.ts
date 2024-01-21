@@ -4,7 +4,7 @@ import { createProgramNode, simpleMatchToken } from '../utils'
 
 export const MessageDirective = defineDirective<MessageToken, MessageStatement>(context => ({
   lex(comment) {
-    return simpleMatchToken(comment, /#(error|warning|info)\s*([\u4E00-\u9FA5 \t\w]*)/)
+    return simpleMatchToken(comment, /#(error|warning|info)\s*(.*)/)
   },
   parse(token) {
     if (token.type === 'error' || token.type === 'warning' || token.type === 'info') {

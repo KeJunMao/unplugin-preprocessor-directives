@@ -1,17 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-labels */
+import { isComment, parseComment } from '../utils'
 import type { CodeToken, Lex, SimpleToken } from '../types'
-
-export function isComment(line: string) {
-  return (
-    // JS comment
-    line.slice(0, 3) === '// '
-    // CSS comment
-    || line.slice(0, 3) === '/* '
-    // HTML comment
-    || line.slice(0, 5) === '<!-- '
-  )
-}
 
 export class Lexer {
   current = 0
@@ -31,9 +21,11 @@ export class Lexer {
       const line = code.slice(startIndex, endIndex).trim()
       if (isComment(line)) {
         for (const lex of this.lexers) {
-          const token = lex.bind(this)(line)
+          const comment = parseComment(line)
+
+          const token = lex.bind(this)(comment.content!)
           if (token) {
-            this.tokens.push(token)
+            this.tokens.push({ comment: comment.type, ...token })
             this.current = endIndex
             continue scanner
           }

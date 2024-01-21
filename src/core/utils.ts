@@ -1,3 +1,4 @@
+import { comments } from './constant'
 import type { ProgramNode, SimpleNode, SimpleToken } from './types'
 
 export function simpleMatchToken<T = SimpleToken>(comment: string, regex: RegExp) {
@@ -15,4 +16,22 @@ export function createProgramNode(body: SimpleNode[] = []) {
     type: 'Program',
     body,
   } as ProgramNode
+}
+
+export function isComment(line: string) {
+  return comments.some(comment => comment.regex.test(line))
+}
+
+export function parseComment(line: string) {
+  const comment = comments.find(comment => comment.start === line.slice(0, comment.start.length))
+  const content = comment?.regex.exec(line)?.[1]
+
+  return {
+    type: comment?.type,
+    content: content?.trim(),
+  }
+}
+
+export function findComment(type: string) {
+  return comments.find(comment => comment.type === type)!
 }

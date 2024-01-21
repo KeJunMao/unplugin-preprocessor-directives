@@ -18,7 +18,7 @@ export class Parser {
     for (const parser of this.parsers) {
       const node = parser.bind(this)(token)
       if (node)
-        return node
+        return { comment: token.comment, ...node }
     }
 
     throw new Error(`Parser: Unknown token type: ${token.type}`)

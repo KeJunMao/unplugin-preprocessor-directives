@@ -3,14 +3,17 @@ import type { Lexer } from '../context/lexer'
 import type { Parser } from '../context/parser'
 import type { Transformer } from '../context/transformer'
 import type { Generator } from '../context/generator'
+import type { Comment } from '../types'
 
 export interface SimpleToken {
+  comment?: string
   type: string
   value: string
   [x: string]: any
 }
 
 export interface SimpleNode {
+  comment?: string
   type: string
   [x: string]: any
 }
@@ -18,7 +21,7 @@ export interface SimpleNode {
 export type Lex<T = SimpleToken> = (this: Lexer, currentLine: string) => (T | void)
 export type Parse<T = SimpleToken, N = SimpleNode> = (this: Parser, currentToken: T) => (N | void)
 export type Transform<N = SimpleNode, ResultN = SimpleNode> = (this: Transformer, currentNode: N) => (ResultN | void)
-export type Generate = (this: Generator, ast: SimpleNode) => (string | void)
+export type Generate = (this: Generator, ast: SimpleNode, comment?: Comment) => (string | void)
 
 export interface ObjectDirective<T = SimpleToken, N = SimpleNode> {
   enforce?: 'pre' | 'post'

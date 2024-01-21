@@ -1,4 +1,5 @@
 import type { Generate, SimpleNode } from '../types'
+import { findComment } from '../utils'
 
 export class Generator {
   constructor(public node: SimpleNode, public generates: Generate[] = []) {
@@ -13,7 +14,8 @@ export class Generator {
     }
 
     for (const generate of this.generates) {
-      const generated = generate.call(this, node)
+      const comment = findComment(node.comment!)
+      const generated = generate.call(this, node, comment)
       if (generated)
         return generated
     }

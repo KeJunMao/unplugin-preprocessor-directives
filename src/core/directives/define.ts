@@ -17,7 +17,8 @@ function resolveDefineNameAndValue(expression: string, env = process.env): [stri
 
 export const theDefineDirective = defineDirective<DefineToken, DefineStatement>(context => ({
   lex(comment) {
-    const defineMath = comment.match(/#define\s?([\w !=&|()'"?:]*)/)
+    const defineMath = comment.match(/#define\s?(.*)/)
+
     if (defineMath) {
       return {
         type: 'define',

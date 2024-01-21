@@ -1,4 +1,4 @@
 <!-- #define html -->
 /* #define css */
 // #define js
-/* #define DEV = !TEST ? '1' : '2'
+// #define DEV = !TEST ? '1' : '2'

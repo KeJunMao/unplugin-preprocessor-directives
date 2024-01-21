@@ -31,7 +31,7 @@ export function resolveConditional(test: string, env = process.env) {
 export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
   return {
     lex(comment) {
-      return simpleMatchToken(comment, /#(if|else|elif|endif)\s?([\w !=&|()'"?:]*).*/)
+      return simpleMatchToken(comment, /#(if|else|elif|endif)\s?(.*)/)
     },
     parse(token) {
       if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {
