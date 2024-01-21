@@ -1,8 +1,9 @@
+/* eslint-disable curly */
 /* eslint-disable no-new-func */
 import process from 'node:process'
 import { defineDirective } from '../directive'
 import type { DefineStatement, DefineToken } from '../types'
-import { createProgramNode, simpleMatchToken } from '../utils'
+import { createProgramNode } from '../utils'
 
 function resolveDefineNameAndValue(expression: string, env = process.env): [string, boolean] {
   if (/^\w*$/.test(expression)) {
@@ -49,7 +50,8 @@ export const theDefineDirective = defineDirective<DefineToken, DefineStatement>(
         const [name, value] = resolveDefineNameAndValue(node.value, context.env)
         context.env[name] = value
       }
-      else if (node.kind === 'undef') { context.env[node.value] = false }
+      else if (node.kind === 'undef')
+        context.env[node.value] = false
 
       return createProgramNode()
     }

@@ -1,7 +1,6 @@
 import { resolve } from 'node:path'
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
-import fg from 'fast-glob'
 import { Context, theDefineDirective } from '../src'
 
 describe('define', () => {
