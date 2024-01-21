@@ -32,8 +32,8 @@ export const MessageDirective = defineDirective<MessageToken, MessageStatement>(
       return createProgramNode()
     }
   },
-  generate(node) {
-    if (node.type === 'MessageStatement')
-      return `#${node.kind} ${node.value}`
+  generate(node, comment) {
+    if (node.type === 'MessageStatement' && comment)
+      return `${comment.start} #${node.kind} ${node.value} ${comment.end}`
   },
 }))

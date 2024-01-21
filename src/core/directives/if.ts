@@ -78,14 +78,14 @@ export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
         }
       }
     },
-    generate(node) {
-      if (node.type === 'IfStatement') {
+    generate(node, comment) {
+      if (node.type === 'IfStatement' && comment) {
         let code = ''
         if (node.kind === 'else')
-          code = '// #else'
+          code = `${comment.start} ${node.kind} ${comment.end}`
 
         else
-          code = `// #${node.kind} ${node.test}`
+          code = `${comment.start} #${node.kind} ${node.test}${comment.end}`
 
         const consequentCode = node.consequent.map(this.walk.bind(this)).join('\n')
         code += `\n${consequentCode}`
@@ -94,7 +94,7 @@ export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
           code += `\n${alternateCode}`
         }
         else {
-          code += '\n// #endif'
+          code += `\n${comment.start} #endif ${comment.end}`
         }
         return code
       }

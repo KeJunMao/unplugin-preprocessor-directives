@@ -54,13 +54,13 @@ export const theDefineDirective = defineDirective<DefineToken, DefineStatement>(
       return createProgramNode()
     }
   },
-  generate(node) {
-    if (node.type === 'DefineStatement') {
+  generate(node, comment) {
+    if (node.type === 'DefineStatement' && comment) {
       if (node.kind === 'define')
-        return `#${node.kind} ${node.value}`
+        return `${comment.start} #${node.kind} ${node.value} ${comment.end}`
 
       else if (node.kind === 'undef')
-        return `#${node.kind} ${node.value}`
+        return `${comment.start} #${node.kind} ${node.value} ${comment.end}`
     }
   },
 }))
