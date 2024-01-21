@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`if > should parse if.css, dev = false 1`] = `
+"body {
+}
+body {
+content: "!DEV";
+}
+body {
+content: "!DEV";
+}
+body {
+}"
+`;
+
+exports[`if > should parse if.css, dev = true 1`] = `
+"body {
+content: "DEV";
+}
+body {
+content: "!DEV else";
+}
+body {
+content: "TEST";
+}
+body {
+content: "else";
+}"
+`;
+
+exports[`if > should parse if.html, dev = false 1`] = `
+"<div>!DEV</div>
+<div>!DEV</div>"
+`;
+
+exports[`if > should parse if.html, dev = true 1`] = `
+"<div>DEV</div>
+<div>!DEV else</div>
+<div>TEST</div>
+<div>
+<div>else</div>
+</div>"
+`;
+
+exports[`if > should parse if.js, dev = false 1`] = `
+"console.log('!DEV')
+console.log('!DEV')"
+`;
+
+exports[`if > should parse if.js, dev = true 1`] = `
+"console.log('DEV')
+console.log('!DEV else')
+console.log('TEST')
+console.log('else')"
+`;

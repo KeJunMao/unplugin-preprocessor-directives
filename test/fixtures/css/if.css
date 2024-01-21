@@ -1,5 +1,0 @@
-body {
-  /* #if DEV */
-  content: "DEV";
-  /* #endif */
-}

@@ -1,0 +1,36 @@
+body {
+  /* #if DEV */
+  content: "DEV";
+  /* #endif */
+}
+
+
+body {
+  /* #if !DEV */
+  content: "!DEV";
+  /* #else */
+  content: "!DEV else";
+  /* #endif */
+}
+
+
+body {
+  /* #if !DEV */
+  content: "!DEV";
+  /* #elif TEST */
+  content: "TEST";
+  /* #else */
+  content: "!DEV else";
+  /* #endif */
+}
+
+
+body {
+  /* #if DEV */
+    /* #if !TEST */
+    content: "!DEV !TEST";
+    /* #else */
+    content: "else";
+    /* #endif */
+  /* #endif */
+}

@@ -1,9 +1,5 @@
-import type { DirectiveFactory } from '../types'
+import type { Directive, SimpleNode, SimpleToken } from './types/index'
 
-export function defineDirective<UserOptions>(
-  factory: DirectiveFactory<UserOptions>,
-) {
-  return (userOptions?: UserOptions) => {
-    return factory(userOptions!)
-  }
+export function defineDirective<T extends SimpleToken, N extends SimpleNode>(directive: Directive<T, N>) {
+  return directive
 }

@@ -1,18 +1,18 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/indent */
+// eslint-disable @typescript-eslint/indent
 /* prettier-ignore */
 document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
-
+// #undef DEV
 // #error this is an error message
 // #warning this is a warning message
 // #info this is an info message
 
 console.log(1)
 // #if DEV
-  console.log(2)
-  // #if ASD != '233'
-  console.log(3)
-  // #endif
+console.log(2)
+// #if ASD != '233'
+console.log(3)
+// #endif
 console.log(4)
 // #elif NODE_ENV == 'development'
 console.log(5)

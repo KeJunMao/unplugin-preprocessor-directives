@@ -1,15 +1,18 @@
 import process from 'node:process'
 import { defineDirective } from '../directive'
+import type { IfStatement, IfToken } from '../types'
+import { simpleMatchToken } from '../utils'
 
 export function resolveConditional(test: string, env = process.env) {
   test = test || 'true'
   test = test.trim()
   test = test.replace(/([^=!])=([^=])/g, '$1==$2')
+
   // eslint-disable-next-line no-new-func
   const evaluateCondition = new Function('env', `with (env){ return ( ${test} ) }`)
 
   try {
-    return evaluateCondition(env)
+    return evaluateCondition(env) === 'false' ? false : !!evaluateCondition(env)
   }
   catch (error) {
     if (error instanceof ReferenceError) {
@@ -25,32 +28,76 @@ export function resolveConditional(test: string, env = process.env) {
   }
 }
 
-export default defineDirective<undefined>(() => ({
-  name: '#if',
-  nested: true,
-  pattern: {
-    start: /.*?#if\s([\w !=&|()'"]*).*[\r\n]{1,2}/gm,
-    end: /\s*.*?#endif.*?$/gm,
-  },
-  processor({ matchGroup, replace, ctx }) {
-    const code = replace(matchGroup.match)
-    const regex = /.*?(#el(?:if|se))\s?([\w !=&|()'"]*).*[\r\n]{1,2}/gm
-    const codeBlock = [
-      '#if',
-      matchGroup.left?.[1] || '',
-      ...ctx.XRegExp.split(code, regex),
-    ].map(v => v.trim())
+export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
+  return {
+    lex(comment) {
+      return simpleMatchToken(comment, /#(if|else|elif|endif)\s?(.*)/)
+    },
+    parse(token) {
+      if (token.type === 'if' || token.type === 'elif' || token.type === 'else') {
+        const node: IfStatement = {
+          type: 'IfStatement',
+          test: token.value,
+          consequent: [],
+          alternate: [],
+          kind: token.type,
+        }
+        this.current++
 
-    while (codeBlock.length) {
-      const [variant, conditional, block] = codeBlock.splice(0, 3)
-      if (variant === '#if' || variant === '#elif') {
-        if (resolveConditional(conditional, ctx.env))
-          return block
+        while (this.current < this.tokens.length) {
+          const nextToken = this.tokens[this.current]
+
+          if (nextToken.type === 'elif' || nextToken.type === 'else') {
+            node.alternate.push(this.walk())
+            break
+          }
+          else if (nextToken.type === 'endif') {
+            this.current++ // Skip 'endif'
+            break
+          }
+          else {
+            node.consequent.push(this.walk())
+          }
+        }
+        return node
       }
-      else if (variant === '#else') {
-        return block
+    },
+    transform(node) {
+      if (node.type === 'IfStatement') {
+        if (resolveConditional(node.test, context.env)) {
+          return {
+            type: 'Program',
+            body: node.consequent.map(this.walk.bind(this)).filter(n => n != null),
+          }
+        }
+        else if (node.alternate) {
+          return {
+            type: 'Program',
+            body: node.alternate.map(this.walk.bind(this)).filter(n => n != null),
+          }
+        }
       }
-    }
-    return ''
-  },
-}))
+    },
+    generate(node, comment) {
+      if (node.type === 'IfStatement' && comment) {
+        let code = ''
+        if (node.kind === 'else')
+          code = `${comment.start} ${node.kind} ${comment.end}`
+
+        else
+          code = `${comment.start} #${node.kind} ${node.test}${comment.end}`
+
+        const consequentCode = node.consequent.map(this.walk.bind(this)).join('\n')
+        code += `\n${consequentCode}`
+        if (node.alternate.length) {
+          const alternateCode = node.alternate.map(this.walk.bind(this)).join('\n')
+          code += `\n${alternateCode}`
+        }
+        else {
+          code += `\n${comment.start} #endif ${comment.end}`
+        }
+        return code
+      }
+    },
+  }
+})

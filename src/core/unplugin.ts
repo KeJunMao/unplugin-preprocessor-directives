@@ -1,12 +1,15 @@
 import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
+import remapping from '@ampproject/remapping'
 import type { UserOptions } from '../types'
 import { Context } from './context'
+import { MessageDirective, ifDirective, theDefineDirective } from './directives'
 
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
 ) => {
-  const ctx = new Context(options)
+  // @ts-expect-error ignore
+  const ctx = new Context({ ...options, directives: [ifDirective, theDefineDirective, MessageDirective, ...options?.directives ?? []] })
   return {
     name: 'unplugin-preprocessor-directives',
     enforce: 'pre',
@@ -16,7 +19,25 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
     },
     vite: {
       configResolved(config) {
-        ctx.env = { ...ctx.env, ...config.env }
+        ctx.env = {
+          ...ctx.loadEnv(config.mode),
+          ...config.env,
+        }
+      },
+      transform(code, id) {
+        if (ctx.filter(id)) {
+          const transformed = ctx.transformWithMap(code, id)
+          if (transformed) {
+            const map = remapping(
+              [transformed.map, this.getCombinedSourcemap() as any],
+              () => null,
+            ) as any
+            return {
+              code: transformed.code,
+              map,
+            }
+          }
+        }
       },
     },
   }
