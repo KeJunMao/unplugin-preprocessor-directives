@@ -1,4 +1,7 @@
-import { CodeToken, Lex, SimpleToken } from '../types'
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-labels */
+import type { CodeToken, Lex, SimpleToken } from '../types'
+
 export function isComment(line: string) {
   return (
     // JS comment
@@ -27,7 +30,7 @@ export class Lexer {
 
       const line = code.slice(startIndex, endIndex).trim()
       if (isComment(line)) {
-        for (let lex of this.lexers) {
+        for (const lex of this.lexers) {
           const token = lex.bind(this)(line)
           if (token) {
             this.tokens.push(token)

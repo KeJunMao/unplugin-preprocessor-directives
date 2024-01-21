@@ -1,5 +1,6 @@
+import process from 'node:process'
 import { defineDirective } from '../directive'
-import { IfStatement, IfToken } from '../types'
+import type { IfStatement, IfToken } from '../types'
 import { simpleMatchToken } from '../utils'
 
 export function resolveConditional(test: string, env = process.env) {
@@ -65,13 +66,14 @@ export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
         if (resolveConditional(node.test, context.env)) {
           return {
             type: 'Program',
-            body: node.consequent.map(this.walk.bind(this)).filter(n => n != null)
-          };
-        } else if (node.alternate) {
+            body: node.consequent.map(this.walk.bind(this)).filter(n => n != null),
+          }
+        }
+        else if (node.alternate) {
           return {
             type: 'Program',
-            body: node.alternate.map(this.walk.bind(this)).filter(n => n != null)
-          };
+            body: node.alternate.map(this.walk.bind(this)).filter(n => n != null),
+          }
         }
       }
     },
@@ -95,6 +97,6 @@ export const ifDirective = defineDirective<IfToken, IfStatement>((context) => {
         }
         return code
       }
-    }
+    },
   }
 })

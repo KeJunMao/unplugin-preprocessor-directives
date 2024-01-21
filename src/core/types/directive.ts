@@ -1,9 +1,8 @@
-import { Context } from "../context"
-import { Lexer } from "../context/lexer"
-import { Parser } from "../context/parser"
-import { Transformer } from "../context/transformer"
-import { Generator } from "../context/generator"
-import { ProgramNode } from "./node"
+import type { Context } from '../context'
+import type { Lexer } from '../context/lexer'
+import type { Parser } from '../context/parser'
+import type { Transformer } from '../context/transformer'
+import type { Generator } from '../context/generator'
 
 export interface SimpleToken {
   type: string

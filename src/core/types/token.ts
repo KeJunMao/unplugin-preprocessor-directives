@@ -1,4 +1,4 @@
-import { SimpleToken } from ".";
+import type { SimpleToken } from '.'
 
 export interface CodeToken extends SimpleToken {
   type: 'code'

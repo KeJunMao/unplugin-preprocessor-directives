@@ -1,8 +1,8 @@
-import { defineDirective } from "../directive";
-import { DefineStatement, DefineToken } from "../types";
-import { createProgramNode, simpleMatchToken } from "../utils";
+import { defineDirective } from '../directive'
+import type { DefineStatement, DefineToken } from '../types'
+import { createProgramNode, simpleMatchToken } from '../utils'
 
-export const theDefineDirective = defineDirective<DefineToken, DefineStatement>((context) => ({
+export const theDefineDirective = defineDirective<DefineToken, DefineStatement>(context => ({
   lex(comment) {
     return simpleMatchToken(comment, /#(define|undef)\s*(.*)/)
   },
@@ -18,23 +18,22 @@ export const theDefineDirective = defineDirective<DefineToken, DefineStatement>(
   },
   transform(node) {
     if (node.type === 'DefineStatement') {
-      if (node.kind === 'define') {
+      if (node.kind === 'define')
         context.env[node.name] = true
-      }
-      else if (node.kind === 'undef') {
+
+      else if (node.kind === 'undef')
         context.env[node.name] = false
-      }
+
       return createProgramNode()
     }
   },
   generate(node) {
     if (node.type === 'DefineStatement') {
-      if (node.kind === 'define') {
+      if (node.kind === 'define')
         return `#${node.kind} ${node.name}`
-      }
-      else if (node.kind === 'undef') {
+
+      else if (node.kind === 'undef')
         return `#${node.kind} ${node.name}`
-      }
     }
-  }
+  },
 }))

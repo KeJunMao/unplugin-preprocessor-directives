@@ -1,4 +1,4 @@
-import { SimpleToken, SimpleNode, ProgramNode } from "./types"
+import type { ProgramNode, SimpleNode, SimpleToken } from './types'
 
 export function simpleMatchToken<T = SimpleToken>(comment: string, regex: RegExp) {
   const match = comment.match(regex)
@@ -10,7 +10,9 @@ export function simpleMatchToken<T = SimpleToken>(comment: string, regex: RegExp
   }
 }
 
-export const createProgramNode = (body: SimpleNode[] = []) => ({
-  type: 'Program',
-  body,
-} as ProgramNode)
+export function createProgramNode(body: SimpleNode[] = []) {
+  return {
+    type: 'Program',
+    body,
+  } as ProgramNode
+}

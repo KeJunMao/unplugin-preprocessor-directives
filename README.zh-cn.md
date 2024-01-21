@@ -50,7 +50,6 @@ export default {
 
 <br></details>
 
-
 <details>
 <summary>Webpack</summary><br>
 
@@ -202,7 +201,7 @@ class MyClass {
 以内置指令为例：
 
 ```ts
-export default defineDirective<DefineToken, DefineStatement>((context) => ({
+export default defineDirective<DefineToken, DefineStatement>(context => ({
   lex(comment) {
     return simpleMatchToken(comment, /#(define|undef)\s*(.*)/)
   },
@@ -218,23 +217,22 @@ export default defineDirective<DefineToken, DefineStatement>((context) => ({
   },
   transform(node) {
     if (node.type === 'DefineStatement') {
-      if (node.kind === 'define') {
+      if (node.kind === 'define')
         context.env[node.name] = true
-      }
-      else if (node.kind === 'undef') {
+
+      else if (node.kind === 'undef')
         context.env[node.name] = false
-      }
+
       return createProgramNode()
     }
   },
   generate(node) {
     if (node.type === 'DefineStatement') {
-      if (node.kind === 'define') {
+      if (node.kind === 'define')
         return `#${node.kind} ${node.name}`
-      }
-      else if (node.kind === 'undef') {
+
+      else if (node.kind === 'undef')
         return `#${node.kind} ${node.name}`
-      }
     }
   }
 }))

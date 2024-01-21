@@ -1,11 +1,13 @@
+import process from 'node:process'
+import type { Logger } from 'vite'
 import { createFilter, createLogger, loadEnv } from 'vite'
-import { UserOptions } from '../../types'
-import { Generate, Lex, ObjectDirective, Parse, Transform } from '../types'
+import type { UserOptions } from '../../types'
+import type { Generate, Lex, ObjectDirective, Parse, Transform } from '../types'
 import { Generator } from './generator'
 import { Lexer } from './lexer'
 import { Parser } from './parser'
 import { Transformer } from './transformer'
-import { Logger } from 'vite'
+
 export * from './lexer'
 export * from './parser'
 
@@ -73,7 +75,7 @@ export class Context {
     )
   }
 
-  transform(code: string, id: string) {
+  transform(code: string, _id: string) {
     const tokens = Lexer.lex(code, this.lexers)
     const ast = Parser.parse(tokens, this.parsers)
 

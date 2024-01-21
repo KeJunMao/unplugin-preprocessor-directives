@@ -1,4 +1,4 @@
-import { Generate, SimpleNode } from "../types";
+import type { Generate, SimpleNode } from '../types'
 
 export class Generator {
   constructor(public node: SimpleNode, public generates: Generate[] = []) {
@@ -14,10 +14,11 @@ export class Generator {
 
     for (const generate of this.generates) {
       const generated = generate.call(this, node)
-      if (generated) return generated
+      if (generated)
+        return generated
     }
 
-    throw new Error(`Generator: Unknown node type: ${node.type}`);
+    throw new Error(`Generator: Unknown node type: ${node.type}`)
   }
 
   private generate(): string {

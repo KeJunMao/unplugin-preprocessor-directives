@@ -2,7 +2,7 @@ import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
 import type { UserOptions } from '../types'
 import { Context } from './context'
-import { ifDirective, theDefineDirective, MessageDirective } from './directives'
+import { MessageDirective, ifDirective, theDefineDirective } from './directives'
 
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
@@ -20,7 +20,7 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
       configResolved(config) {
         ctx.env = {
           ...ctx.loadEnv(config.mode),
-          ...config.env
+          ...config.env,
         }
       },
     },

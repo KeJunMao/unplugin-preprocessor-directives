@@ -1,5 +1,5 @@
 import type { FilterPattern } from 'vite'
-import { Directive } from './core/types'
+import type { Directive } from './core/types'
 
 export interface Options {
   cwd: string

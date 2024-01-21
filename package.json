@@ -147,13 +147,10 @@
     "webpack": "^4 || ^5"
   },
   "peerDependenciesMeta": {
-    "webpack": {
+    "@nuxt/kit": {
       "optional": true
     },
-    "rollup": {
-      "optional": true
-    },
-    "vite": {
+    "@nuxt/schema": {
       "optional": true
     },
     "@rspack/core": {
@@ -162,10 +159,13 @@
     "esbuild": {
       "optional": true
     },
-    "@nuxt/kit": {
+    "rollup": {
       "optional": true
     },
-    "@nuxt/schema": {
+    "vite": {
+      "optional": true
+    },
+    "webpack": {
       "optional": true
     }
   },

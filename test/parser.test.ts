@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Parser } from '../src'
 
-describe('Parser', () => {
+describe('parser', () => {
   it('should parse code statements', () => {
     const tokens = [{ type: 'code', value: 'console.log("Hello, World!")' }]
     const ast = Parser.parse(tokens)
@@ -14,4 +14,4 @@ describe('Parser', () => {
     const tokens = [{ type: 'unknown', value: 'unknown token' }]
     expect(() => Parser.parse(tokens)).toThrowError('Parser: Unknown token type: unknown')
   })
-});
+})

@@ -1,4 +1,4 @@
-import { ProgramNode, SimpleNode, Transform } from "../types";
+import type { ProgramNode, SimpleNode, Transform } from '../types'
 
 export class Transformer {
   constructor(public program: ProgramNode, public transforms: Transform[] = []) {
@@ -9,19 +9,19 @@ export class Transformer {
       case 'Program':
         return {
           ...node,
-          body: node.body.map(this.walk.bind(this)).filter((n: any) => !!n)
-        } as ProgramNode;
+          body: node.body.map(this.walk.bind(this)).filter((n: any) => !!n),
+        } as ProgramNode
       case 'CodeStatement':
-        return node;
+        return node
     }
-
 
     for (const transformer of this.transforms) {
       const transformed = transformer.bind(this)(node)
-      if (transformed) return transformed
+      if (transformed)
+        return transformed
     }
 
-    throw new Error(`Transformer: Unknown node type: ${node.type}`);
+    throw new Error(`Transformer: Unknown node type: ${node.type}`)
   }
 
   private transform(): SimpleNode | void {

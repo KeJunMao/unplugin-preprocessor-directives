@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/indent */
+// eslint-disable @typescript-eslint/indent
 /* prettier-ignore */
 document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
 // #undef DEV

@@ -1,4 +1,4 @@
-import { CodeStatement, Parse, SimpleToken } from '../types'
+import type { CodeStatement, Parse, SimpleToken } from '../types'
 import { createProgramNode } from '../utils'
 
 export class Parser {
@@ -15,11 +15,10 @@ export class Parser {
       return { type: 'CodeStatement', value: token.value } as CodeStatement
     }
 
-    for (let parser of this.parsers) {
+    for (const parser of this.parsers) {
       const node = parser.bind(this)(token)
-      if (node) {
+      if (node)
         return node
-      }
     }
 
     throw new Error(`Parser: Unknown token type: ${token.type}`)
