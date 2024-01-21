@@ -1,5 +1,6 @@
 import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
+import remapping from '@ampproject/remapping'
 import type { UserOptions } from '../types'
 import { Context } from './context'
 import { MessageDirective, ifDirective, theDefineDirective } from './directives'
@@ -21,6 +22,21 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
         ctx.env = {
           ...ctx.loadEnv(config.mode),
           ...config.env,
+        }
+      },
+      transform(code, id) {
+        if (ctx.filter(id)) {
+          const transformed = ctx.transformWithMap(code, id)
+          if (transformed) {
+            const map = remapping(
+              [transformed.map, this.getCombinedSourcemap() as any],
+              () => null,
+            ) as any
+            return {
+              code: transformed.code,
+              map,
+            }
+          }
         }
       },
     },

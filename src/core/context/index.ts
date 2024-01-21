@@ -1,6 +1,7 @@
 import process from 'node:process'
 import type { Logger } from 'vite'
 import { createFilter, createLogger, loadEnv } from 'vite'
+import MagicString from 'magic-string'
 import type { UserOptions } from '../../types'
 import type { Generate, Lex, ObjectDirective, Parse, Transform } from '../types'
 import { Generator } from './generator'
@@ -80,9 +81,19 @@ export class Context {
     const ast = Parser.parse(tokens, this.parsers)
 
     const transformed = Transformer.transform(ast, this.transforms)
-    if (transformed) {
-      const generated = Generator.generate(transformed, this.generates)
-      return generated
+    if (transformed)
+      return Generator.generate(transformed, this.generates)
+  }
+
+  transformWithMap(code: string, _id: string) {
+    const generated = this.transform(code, _id)
+    if (generated) {
+      const ms = new MagicString(code, { filename: _id })
+      ms.overwrite(0, code.length, generated)
+      return {
+        code: ms.toString(),
+        map: ms.generateMap({ hires: true }),
+      }
     }
   }
 }
