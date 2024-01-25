@@ -29,9 +29,9 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
           const transformed = ctx.transformWithMap(code, id)
           if (transformed) {
             const map = remapping(
-              [transformed.map, this.getCombinedSourcemap() as any],
+              [this.getCombinedSourcemap() as any, transformed.map],
               () => null,
-            ) as any
+            )
             return {
               code: transformed.code,
               map,
