@@ -31,7 +31,7 @@ export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
             const map = remapping(
               [this.getCombinedSourcemap() as any, transformed.map],
               () => null,
-            )
+            ) as any
             return {
               code: transformed.code,
               map,
