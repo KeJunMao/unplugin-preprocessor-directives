@@ -28,7 +28,7 @@ export function parseComment(line: string) {
 
   return {
     type: comment?.type,
-    content: content?.trim(),
+    content: content?.trim() ?? '',
   }
 }
 
