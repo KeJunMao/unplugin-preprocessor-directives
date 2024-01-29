@@ -4,11 +4,15 @@
 
 [![npm version][npm-version-src]][npm-version-href]
 [![npm downloads][npm-downloads-src]][npm-downloads-href]
+[![github stars][github-stars-src]][github-stars-href]
 [![bundle][bundle-src]][bundle-href]
 [![License][license-src]][license-href]
 [![JSDocs][jsdocs-src]][jsdocs-href]
 
 English | [简体中文](./README.zh-cn.md)
+
+>[!IMPORTANT]
+> If you like this project, please consider giving it a star ⭐️. Your support will help this project become a part of the [unplugin organization](https://github.com/unplugin/.github/issues/5)!
 
 ## Install
 
@@ -246,8 +250,10 @@ Execution priority of directives
 
 [npm-version-src]: https://img.shields.io/npm/v/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-version-href]: https://npmjs.com/package/unplugin-preprocessor-directives
-[npm-downloads-src]: https://img.shields.io/npm/dm/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
+[npm-downloads-src]: https://img.shields.io/npm/dw/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [npm-downloads-href]: https://npmjs.com/package/unplugin-preprocessor-directives
+[github-stars-src]: https://img.shields.io/github/stars/kejunmao/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
+[github-stars-href]: https://github.com/kejunmao/unplugin-preprocessor-directives
 [bundle-src]: https://img.shields.io/bundlephobia/minzip/unplugin-preprocessor-directives?style=flat&colorA=18181B&colorB=F0DB4F
 [bundle-href]: https://bundlephobia.com/result?p=unplugin-preprocessor-directives
 [license-src]: https://img.shields.io/github/license/kejunmao/unplugin-preprocessor-directives.svg?style=flat&colorA=18181B&colorB=F0DB4F
