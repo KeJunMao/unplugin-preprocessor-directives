@@ -11,6 +11,21 @@ data.value += 1
   <div>
     <div>{{ data }}</div>
     <!-- #if DEV -->
+    <pre>
+      {
+        "tag": "jy-dict", //
+        "data": {
+          "props": {
+            "type": "radio",
+            "dict": "Common_YesNo",
+            "dataType": "String"
+          }
+        }
+      }
+    </pre>
+    <!-- #endif -->
+
+    <!-- #if DEV -->
     DEV
     <!-- #endif -->
 

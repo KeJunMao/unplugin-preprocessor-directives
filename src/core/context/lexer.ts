@@ -11,6 +11,7 @@ export class Lexer {
 
   private lex() {
     const code = this.code
+    let inPreTag = false
     scanner:
     while (this.current < code.length) {
       const startIndex = this.current
@@ -18,7 +19,14 @@ export class Lexer {
       if (endIndex === -1)
         endIndex = code.length
 
+      const lineWithWhiteSpace = code.slice(startIndex, endIndex)
       const line = code.slice(startIndex, endIndex).trim()
+
+      if (line.includes('<pre>'))
+        inPreTag = true
+      else if (line.includes('</pre>'))
+        inPreTag = false
+
       if (isComment(line)) {
         for (const lex of this.lexers) {
           const comment = parseComment(line)
@@ -33,7 +41,9 @@ export class Lexer {
       }
       this.tokens.push({
         type: 'code',
-        value: line,
+        // filter pre tag
+        value: inPreTag ? lineWithWhiteSpace.replace('\n', '') : line,
+        // value: line,
       } as CodeToken)
       this.current = endIndex
     }
