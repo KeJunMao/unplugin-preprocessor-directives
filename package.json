@@ -170,7 +170,7 @@
     }
   },
   "dependencies": {
-    "@ampproject/remapping": "^2.2.1",
+    "@jridgewell/remapping": "^2.3.5",
     "magic-string": "^0.30.5",
     "unplugin": "^1.6.0"
   },

@@ -1,6 +1,6 @@
 import type { UnpluginFactory } from 'unplugin'
 import { createUnplugin } from 'unplugin'
-import remapping from '@ampproject/remapping'
+import remapping from '@jridgewell/remapping'
 import type { UserOptions } from '../types'
 import { Context } from './context'
 import { MessageDirective, ifDirective, theDefineDirective } from './directives'
