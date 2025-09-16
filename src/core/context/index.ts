@@ -78,6 +78,9 @@ export class Context {
 
   transform(code: string, _id: string) {
     const tokens = Lexer.lex(code, this.lexers)
+    const hasDirective = tokens.some(token => token.type !== 'code')
+    if (!hasDirective)
+      return
     const ast = Parser.parse(tokens, this.parsers)
 
     const transformed = Transformer.transform(ast, this.transforms)
