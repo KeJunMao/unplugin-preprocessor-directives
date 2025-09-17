@@ -1,5 +1,5 @@
-import { comments } from './constant'
 import type { ProgramNode, SimpleNode, SimpleToken } from './types'
+import { comments } from './constant'
 
 export function simpleMatchToken<T = SimpleToken>(comment: string, regex: RegExp) {
   const match = comment.match(regex)

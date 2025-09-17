@@ -1,7 +1,6 @@
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-labels */
-import { isComment, parseComment } from '../utils'
 import type { CodeToken, Lex, SimpleToken } from '../types'
+import { isComment, parseComment } from '../utils'
 
 export class Lexer {
   current = 0

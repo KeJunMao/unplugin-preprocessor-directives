@@ -1,7 +1,7 @@
+import type { UserOptions } from './types'
 import { addVitePlugin, addWebpackPlugin, defineNuxtModule } from '@nuxt/kit'
 import vite from './vite'
 import webpack from './webpack'
-import type { UserOptions } from './types'
 import '@nuxt/schema'
 
 export interface ModuleOptions extends UserOptions {

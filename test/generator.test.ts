@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { Generator } from '../src/core/context/generator'
 import { Context, Lexer, Parser } from '../src'
+import { Generator } from '../src/core/context/generator'
 
 describe('generator', () => {
   it('should generate code for Program node', () => {

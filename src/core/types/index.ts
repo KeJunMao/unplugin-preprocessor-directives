@@ -1,4 +1,4 @@
-export * from './directive'
-export * from './token'
-export * from './node'
 export * from './comment'
+export * from './directive'
+export * from './node'
+export * from './token'

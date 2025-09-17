@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest'
-import { Transformer } from '../src/core/context/transformer'
 import type { ProgramNode } from '../src'
+import { describe, expect, it } from 'vitest'
 import { createProgramNode } from '../src'
+import { Transformer } from '../src/core/context/transformer'
 
 describe('transformer', () => {
   it('should transform the program correctly', () => {

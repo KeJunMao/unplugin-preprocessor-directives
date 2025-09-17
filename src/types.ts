@@ -1,5 +1,6 @@
-import type { FilterPattern } from 'vite'
 import type { Directive } from './core/types'
+
+type FilterPattern = ReadonlyArray<string | RegExp> | string | RegExp | null
 
 export interface Options {
   cwd: string

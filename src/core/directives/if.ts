@@ -1,6 +1,6 @@
+import type { IfStatement, IfToken } from '../types'
 import process from 'node:process'
 import { defineDirective } from '../directive'
-import type { IfStatement, IfToken } from '../types'
 import { simpleMatchToken } from '../utils'
 
 export function resolveConditional(test: string, env = process.env) {
@@ -16,7 +16,7 @@ export function resolveConditional(test: string, env = process.env) {
   }
   catch (error) {
     if (error instanceof ReferenceError) {
-      const match = /(\w*?) is not defined/g.exec(error.message)
+      const match = /(\w*) is not defined/.exec(error.message)
       if (match && match[1]) {
         const name = match[1]
         // @ts-expect-error ignore

@@ -1,8 +1,8 @@
 import type { Context } from '../context'
+import type { Generator } from '../context/generator'
 import type { Lexer } from '../context/lexer'
 import type { Parser } from '../context/parser'
 import type { Transformer } from '../context/transformer'
-import type { Generator } from '../context/generator'
 import type { Comment } from '../types'
 
 export interface SimpleToken {

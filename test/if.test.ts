@@ -1,7 +1,7 @@
-import { resolve } from 'node:path'
 import { readFileSync } from 'node:fs'
-import { describe, expect, it } from 'vitest'
+import { resolve } from 'node:path'
 import fg from 'fast-glob'
+import { describe, expect, it } from 'vitest'
 import { Context, ifDirective } from '../src'
 
 describe('if', () => {

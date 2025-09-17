@@ -1,9 +1,9 @@
 import type { UnpluginFactory } from 'unplugin'
-import { createUnplugin } from 'unplugin'
-import remapping from '@jridgewell/remapping'
 import type { UserOptions } from '../types'
+import remapping from '@jridgewell/remapping'
+import { createUnplugin } from 'unplugin'
 import { Context } from './context'
-import { MessageDirective, ifDirective, theDefineDirective } from './directives'
+import { ifDirective, MessageDirective, theDefineDirective } from './directives'
 
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
