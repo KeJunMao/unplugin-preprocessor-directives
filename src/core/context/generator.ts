@@ -8,7 +8,7 @@ export class Generator {
   walk(node: SimpleNode): string | void {
     switch (node.type) {
       case 'Program':
-        return node.body.map(this.walk.bind(this)).filter((n: any) => !!n && n !== '\r\n').join('')
+        return node.body.map(this.walk.bind(this)).filter((n: any) => !!n).join('')
       case 'CodeStatement':
         return node.value
     }
