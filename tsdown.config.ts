@@ -10,6 +10,6 @@ export default defineConfig({
   shims: false,
   onSuccess: 'npm run build:fix',
   noExternal: [
-    '@rollup/pluginutils'
-  ]
+    '@rollup/pluginutils',
+  ],
 })

@@ -14,7 +14,7 @@ catalogs:
 
     webpack: ^5.89.0
   eslint:
-    '@antfu/eslint-config': ^5.2.1
+    '@antfu/eslint-config': ^6.2.0
     eslint: ^9.34.0
     eslint-plugin-antfu: ^3.1.1
     eslint-vitest-rule-tester: ^2.2.1
