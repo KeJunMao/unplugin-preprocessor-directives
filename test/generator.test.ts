@@ -14,7 +14,7 @@ describe('generator', () => {
       ],
     }
     const result = Generator.generate(node)
-    expect(result).toBe('console.log("Hello, World!");\nconsole.log("Hello, KeJun");')
+    expect(result).toBe('console.log("Hello, World!");console.log("Hello, KeJun");')
   })
 
   it('should generate code for CodeStatement node', () => {
