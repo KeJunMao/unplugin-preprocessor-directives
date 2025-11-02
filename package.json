@@ -40,6 +40,26 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./astro": {
+      "import": {
+        "types": "./dist/astro.d.ts",
+        "default": "./dist/astro.js"
+      },
+      "require": {
+        "types": "./dist/astro.d.cts",
+        "default": "./dist/astro.cjs"
+      }
+    },
+    "./farm": {
+      "import": {
+        "types": "./dist/farm.d.ts",
+        "default": "./dist/farm.js"
+      },
+      "require": {
+        "types": "./dist/farm.d.cts",
+        "default": "./dist/farm.cjs"
+      }
+    },
     "./vite": {
       "import": {
         "types": "./dist/vite.d.ts",
@@ -138,6 +158,7 @@
     "test": "vitest"
   },
   "peerDependencies": {
+    "@farmfe/core": ">=1",
     "@nuxt/kit": "^3",
     "@nuxt/schema": "^3",
     "@rspack/core": "*",
@@ -147,6 +168,9 @@
     "webpack": "^4 || ^5"
   },
   "peerDependenciesMeta": {
+    "@farmfe/core": {
+      "optional": true
+    },
     "@nuxt/kit": {
       "optional": true
     },
