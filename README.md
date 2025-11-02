@@ -20,6 +20,9 @@ English | [简体中文](./README.zh-cn.md)
 npm i unplugin-preprocessor-directives
 ```
 
+> [!NOTE]
+> This plugin should be placed **before** all other plugins in your configuration to ensure preprocessor directives are processed first.
+
 <details>
 <summary>Vite</summary><br>
 
@@ -29,7 +32,7 @@ import PreprocessorDirectives from 'unplugin-preprocessor-directives/vite'
 
 export default defineConfig({
   plugins: [
-    PreprocessorDirectives({ /* options */ }),
+    PreprocessorDirectives({ /* options */ }), // Should be the first plugin
   ],
 })
 ```

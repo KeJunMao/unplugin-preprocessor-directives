@@ -10,7 +10,7 @@
 
 [English](./README.md) | 简体中文
 
->[!IMPORTANT]
+>[!NOTE]
 > 如果你喜欢这个项目，希望你能给这个仓库点一个 star ⭐，你的支持能帮助这个项目加入到 [unplugin 组织](https://github.com/unplugin/.github/issues/5)！
 
 ## 安装
@@ -18,6 +18,9 @@
 ```bash
 npm i unplugin-preprocessor-directives
 ```
+
+> [!IMPORTANT]
+> 此插件应该放在配置中所有其他插件**之前**,以确保预处理器指令首先被处理。
 
 <details>
 <summary>Vite</summary><br>
@@ -28,7 +31,7 @@ import PreprocessorDirectives from 'unplugin-preprocessor-directives/vite'
 
 export default defineConfig({
   plugins: [
-    PreprocessorDirectives({ /* options */ }),
+    PreprocessorDirectives({ /* options */ }), // 应该是第一个插件
   ],
 })
 ```
