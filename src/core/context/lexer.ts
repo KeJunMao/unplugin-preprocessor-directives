@@ -13,11 +13,37 @@ export class Lexer {
     scanner:
     while (this.current < code.length) {
       const startIndex = this.current
-      let endIndex = code.indexOf('\n', startIndex + 1)
-      if (endIndex === -1)
-        endIndex = code.length
+      // 查找最近的换行符(\r\n, \n, \r)
+      const nextCR = code.indexOf('\r', startIndex)
+      const nextLF = code.indexOf('\n', startIndex)
+      let endIndex: number
 
-      const line = code.slice(startIndex, endIndex).trim()
+      if (nextCR === -1 && nextLF === -1) {
+        // 没有找到换行符，说明是最后一行
+        endIndex = code.length
+      }
+      else if (nextCR === -1) {
+        // 只有 \n
+        endIndex = nextLF
+      }
+      else if (nextLF === -1) {
+        // 只有 \r
+        endIndex = nextCR
+      }
+      else if (nextCR < nextLF) {
+        // 如果是 \r\n，跳过 \n
+        endIndex = nextCR
+        if (nextLF === nextCR + 1) {
+          endIndex += 2
+        }
+      }
+      else {
+        // \n
+        endIndex = nextLF
+      }
+
+      const rawLine = code.slice(startIndex, endIndex)
+      const line = rawLine.trim()
       if (isComment(line)) {
         for (const lex of this.lexers) {
           const comment = parseComment(line)
@@ -32,7 +58,7 @@ export class Lexer {
       }
       this.tokens.push({
         type: 'code',
-        value: line,
+        value: rawLine,
       } as CodeToken)
       this.current = endIndex
     }

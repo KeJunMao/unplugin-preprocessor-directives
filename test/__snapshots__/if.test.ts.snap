@@ -4,33 +4,36 @@ exports[`if > should parse if.css, dev = false 1`] = `
 "body {
 }
 body {
-content: "!DEV";
+  content: "!DEV";
 }
 body {
-content: "!DEV";
+  content: "!DEV";
 }
 body {
-}"
+}
+"
 `;
 
 exports[`if > should parse if.css, dev = true 1`] = `
 "body {
-content: "DEV";
+  content: "DEV";
 }
 body {
-content: "!DEV else";
+  content: "!DEV else";
 }
 body {
-content: "TEST";
+  content: "TEST";
 }
 body {
-content: "else";
-}"
+    content: "else";
+}
+"
 `;
 
 exports[`if > should parse if.html, dev = false 1`] = `
 "<div>!DEV</div>
-<div>!DEV</div>"
+<div>!DEV</div>
+"
 `;
 
 exports[`if > should parse if.html, dev = true 1`] = `
@@ -38,30 +41,58 @@ exports[`if > should parse if.html, dev = true 1`] = `
 <div>!DEV else</div>
 <div>TEST</div>
 <div>
-<div>else</div>
-</div>"
+  <div>else</div>
+</div>
+"
 `;
 
 exports[`if > should parse if.js, dev = false 1`] = `
 "console.log('!DEV')
-console.log('!DEV')"
+console.log('!DEV')
+"
 `;
 
 exports[`if > should parse if.js, dev = true 1`] = `
 "console.log('DEV')
 console.log('!DEV else')
 console.log('TEST')
-console.log('else')"
+console.log('else')
+"
 `;
 
 exports[`if > should parse if.jsx, dev = false 1`] = `
 "const Component = () => <div>
-</div>;"
+</div>;
+"
 `;
 
 exports[`if > should parse if.jsx, dev = true 1`] = `
 "const Component = () => <div>
-DEV
-DEV=true
-</div>;"
+    DEV
+    DEV=true
+</div>;
+"
+`;
+
+exports[`if > should parse if.vue, dev = false 1`] = `
+"<script setup lang="ts">
+</script>
+<template>
+    <pre>{
+}</pre>
+</template>
+<style>
+</style>"
+`;
+
+exports[`if > should parse if.vue, dev = true 1`] = `
+"<script setup lang="ts">
+</script>
+<template>
+    <pre>{
+  "data": 'value' // comment
+}</pre>
+</template>
+<style>
+</style>"
 `;
