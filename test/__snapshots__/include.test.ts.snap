@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`include > should include a simple file 1`] = `
+"// Main file
+const mainValue = 'main';
+
+// Base file
+const baseValue = 'base';
+
+// After base include
+const afterBase = 'after';
+
+// File with directives
+const devMode = false;
+
+// End of main
+const endValue = 'end';
+"
+`;
+
+exports[`include > should process directives in included files (DEV=false) 1`] = `
+"// Main file
+const mainValue = 'main';
+
+// Base file
+const baseValue = 'base';
+
+// After base include
+const afterBase = 'after';
+
+// File with directives
+const devMode = false;
+
+// End of main
+const endValue = 'end';
+"
+`;
+
+exports[`include > should process directives in included files (DEV=true) 1`] = `
+"// Main file
+const mainValue = 'main';
+
+// Base file
+const baseValue = 'base';
+
+// After base include
+const afterBase = 'after';
+
+// File with directives
+const devMode = true;
+
+// End of main
+const endValue = 'end';
+"
+`;

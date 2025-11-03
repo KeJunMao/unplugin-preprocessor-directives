@@ -1,0 +1,2 @@
+// Base file
+const baseValue = 'base';
