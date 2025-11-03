@@ -9,12 +9,16 @@ export interface SimpleToken {
   comment?: string
   type: string
   value: string
+  start?: number
+  end?: number
   [x: string]: any
 }
 
 export interface SimpleNode {
   comment?: string
   type: string
+  start?: number
+  end?: number
   [x: string]: any
 }
 

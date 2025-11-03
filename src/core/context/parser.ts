@@ -12,13 +12,24 @@ export class Parser {
 
     if (token.type === 'code') {
       this.current++
-      return { type: 'CodeStatement', value: token.value } as CodeStatement
+      return {
+        type: 'CodeStatement',
+        value: token.value,
+        start: token.start,
+        end: token.end,
+      } as CodeStatement
     }
 
     for (const parser of this.parsers) {
       const node = parser.bind(this)(token)
-      if (node)
-        return { comment: token.comment, ...node }
+      if (node) {
+        return {
+          comment: token.comment,
+          start: token.start,
+          end: token.end,
+          ...node,
+        }
+      }
     }
 
     throw new Error(`Parser: Unknown token type: ${token.type}`)

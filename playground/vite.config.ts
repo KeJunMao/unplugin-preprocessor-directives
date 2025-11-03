@@ -7,4 +7,7 @@ export default defineConfig({
     Inspect(),
     Unplugin(),
   ],
+  build: {
+    sourcemap: true,
+  },
 })

@@ -78,26 +78,32 @@ export class Context {
     )
   }
 
-  transform(code: string, _id: string) {
+  private _processCode(code: string) {
     const tokens = Lexer.lex(code, this.lexers)
     const hasDirective = tokens.some(token => token.type !== 'code')
     if (!hasDirective)
-      return
+      return null
     const ast = Parser.parse(tokens, this.parsers)
+    return Transformer.transform(ast, this.transforms)
+  }
 
-    const transformed = Transformer.transform(ast, this.transforms)
+  transform(code: string, _id: string) {
+    const transformed = this._processCode(code)
     if (transformed)
       return Generator.generate(transformed, this.generates)
   }
 
   transformWithMap(code: string, _id: string) {
-    const generated = this.transform(code, _id)
-    if (generated) {
-      const ms = new MagicString(code, { filename: _id })
-      ms.overwrite(0, code.length, generated)
+    const transformed = this._processCode(code)
+    if (transformed) {
+      const s = new MagicString(code)
+      Generator.generateWithMap(transformed, this.generates, s)
       return {
-        code: ms.toString(),
-        map: ms.generateMap({ hires: true }),
+        code: s.toString(),
+        map: s.generateMap({
+          hires: true,
+          source: _id,
+        }),
       }
     }
   }

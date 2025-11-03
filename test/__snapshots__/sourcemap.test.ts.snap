@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sourcemap > should generate source map when condition is false 1`] = `
+"
+console.log('always')
+"
+`;
+
+exports[`sourcemap > should generate source map with if directive 1`] = `
+"console.log('DEV')
+
+"
+`;
+
+exports[`sourcemap > should generate source map with if directive 2`] = `"{"version":3,"sources":["test.js"],"names":[],"mappings":"AACA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;;"}"`;

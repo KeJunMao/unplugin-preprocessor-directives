@@ -42,17 +42,24 @@ export class Lexer {
 
           const token = lex.bind(this)(comment.content!)
           if (token) {
-            this.tokens.push({ comment: comment.type, ...token })
+            this.tokens.push({
+              comment: comment.type,
+              start: startIndex,
+              end: nextIndex,
+              ...token,
+            })
             this.current = nextIndex
             continue scanner
           }
         }
       }
 
-      // 对于 code 类型，保留原始行内容（包括换行符）
+      // 对于 code 类型,保留原始行内容(包括换行符)
       this.tokens.push({
         type: 'code',
         value: rawLine,
+        start: startIndex,
+        end: nextIndex,
       } as CodeToken)
       this.current = nextIndex
     }
