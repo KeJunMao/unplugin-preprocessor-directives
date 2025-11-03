@@ -188,7 +188,7 @@ class MyClass {
 
 You instruct the compiler to generate user-defined compiler errors and warnings and informational messages.
 
-- `#error`: Generates an error.
+- `#error`: Generates an error, but does not terminate compilation.
 - `#warning`: Generates a warning.
 - `#info`: Generates an informational message.
 
@@ -197,6 +197,18 @@ You instruct the compiler to generate user-defined compiler errors and warnings 
 // #warning this is a warning message
 // #info this is an info message
 ```
+
+Of course, it can also be combined with conditional compilation:
+
+```ts
+// #if DEBUG
+// #info Debug mode is on
+// #endif
+// #if !DEBUG
+// #info Debug mode is off
+// #endif
+```
+
 ## Custom directive
 
 You can used `defineDirective` to define your own directive.

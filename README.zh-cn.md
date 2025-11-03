@@ -187,7 +187,7 @@ class MyClass {
 
 可以指示编译器生成用户定义的编译器错误、警告和信息。
 
-- `#error`: 生成一条错误消息。
+- `#error`: 生成一条错误消息，但不会终止编译。
 - `#warning`: 生成一条警告消息。
 - `#info`: 生成一条信息消息。
 
@@ -195,6 +195,17 @@ class MyClass {
 // #error this is an error message
 // #warning this is a warning message
 // #info this is an info message
+```
+
+当然，也可以和条件编译结合使用：
+
+```ts
+// #if DEBUG
+// #info Debug mode is on
+// #endif
+// #if !DEBUG
+// #info Debug mode is off
+// #endif
 ```
 
 ## 自定义指令
