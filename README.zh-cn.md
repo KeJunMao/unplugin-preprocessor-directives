@@ -10,9 +10,6 @@
 
 [English](./README.md) | 简体中文
 
->[!NOTE]
-> 如果你喜欢这个项目，希望你能给这个仓库点一个 star ⭐，你的支持能帮助这个项目加入到 [unplugin 组织](https://github.com/unplugin/.github/issues/5)！
-
 ## 安装
 
 ```bash

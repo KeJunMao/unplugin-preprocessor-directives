@@ -11,9 +11,6 @@
 
 English | [简体中文](./README.zh-cn.md)
 
->[!IMPORTANT]
-> If you like this project, please consider giving it a star ⭐️. Your support will help this project become a part of the [unplugin organization](https://github.com/unplugin/.github/issues/5)!
-
 ## Install
 
 ```bash
