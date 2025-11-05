@@ -1,7 +1,7 @@
 {
   "name": "unplugin-preprocessor-directives",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "packageManager": "pnpm@10.16.1",
   "description": "",
   "license": "MIT",
