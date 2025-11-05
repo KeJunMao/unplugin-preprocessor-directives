@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 // eslint-disable @typescript-eslint/indent
 /* prettier-ignore */
-document.getElementById('app')!.innerHTML = '__UNPLUGIN__'
+document.getElementById('app')!.innerHTML = `
+// #include "./includes/main.html"
+`
 // #undef DEV
 // #error this is an error message
 // #warning this is a warning message
