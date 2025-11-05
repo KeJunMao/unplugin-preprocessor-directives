@@ -155,7 +155,8 @@
     "prepublishOnly": "npm run build",
     "release": "bumpp",
     "start": "esno src/index.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "@farmfe/core": ">=1",
@@ -205,6 +206,7 @@
     "@nuxt/kit": "catalog:nuxt",
     "@nuxt/schema": "catalog:nuxt",
     "@types/node": "catalog:types",
+    "@vitest/coverage-v8": "^4.0.7",
     "bumpp": "catalog:build",
     "chalk": "catalog:utils",
     "eslint": "catalog:eslint",

@@ -1,6 +1,6 @@
 /* eslint no-console: 0 */
 // copied and adapted from Vite (MIT Licensed)
-
+/* v8 ignore file -- @preserve */
 import process from 'node:process'
 import readline from 'node:readline'
 import colors from 'picocolors'

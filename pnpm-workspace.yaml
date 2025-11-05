@@ -34,7 +34,7 @@ catalogs:
 
     unplugin: ^2.3.9
   vite:
-    vite: ^5.0.12
+    vite: ^6.3.5
     vite-plugin-inspect: ^0.8.1
 
-    vitest: ^1.2.1
+    vitest: ^4.0.7

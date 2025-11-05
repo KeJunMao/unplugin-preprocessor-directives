@@ -1,5 +1,5 @@
 // copied and adapted from Vite (MIT Licensed)
-
+/* v8 ignore file -- @preserve */
 import type { DotenvPopulateInput } from 'dotenv-expand'
 import fs from 'node:fs'
 import path from 'node:path'
