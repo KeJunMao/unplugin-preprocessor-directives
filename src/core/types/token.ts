@@ -17,3 +17,8 @@ export interface MessageToken extends SimpleToken {
   type: 'error' | 'warning' | 'info'
   value: string
 }
+
+export interface IncludeToken extends SimpleToken {
+  type: 'include'
+  value: string
+}

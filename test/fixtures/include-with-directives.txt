@@ -1,0 +1,6 @@
+// File with directives
+// #if DEV
+const devMode = true;
+// #else
+const devMode = false;
+// #endif

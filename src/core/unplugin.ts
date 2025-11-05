@@ -3,13 +3,13 @@ import type { UserOptions } from '../types'
 import remapping from '@jridgewell/remapping'
 import { createUnplugin } from 'unplugin'
 import { Context } from './context'
-import { ifDirective, MessageDirective, theDefineDirective } from './directives'
+import { ifDirective, includeDirective, MessageDirective, theDefineDirective } from './directives'
 
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
 ) => {
   // @ts-expect-error ignore
-  const ctx = new Context({ ...options, directives: [ifDirective, theDefineDirective, MessageDirective, ...options?.directives ?? []] })
+  const ctx = new Context({ ...options, directives: [ifDirective, theDefineDirective, includeDirective, MessageDirective, ...options?.directives ?? []] })
   return {
     name: 'unplugin-preprocessor-directives',
     enforce: 'pre',

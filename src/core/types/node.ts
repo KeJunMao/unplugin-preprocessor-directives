@@ -29,3 +29,9 @@ export interface MessageStatement extends SimpleNode {
   kind: 'error' | 'warning' | 'info'
   value: string
 }
+
+export interface IncludeStatement extends SimpleNode {
+  type: 'IncludeStatement'
+  value: string
+  sourceFile?: string
+}

@@ -1,0 +1,12 @@
+// Main file
+const mainValue = 'main';
+
+// #include "include-base.txt"
+
+// After base include
+const afterBase = 'after';
+
+// #include "include-with-directives.txt"
+
+// End of main
+const endValue = 'end';

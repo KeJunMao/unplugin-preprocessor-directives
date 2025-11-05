@@ -209,6 +209,37 @@ Of course, it can also be combined with conditional compilation:
 // #endif
 ```
 
+### `#include` directive
+
+You can use the `#include` directive to include the contents of other files into the current file. The included files are also processed by the preprocessor.
+
+> [!WARNING]
+> The `#include` directive is a **compile-time text replacement tool**, primarily intended for these scenarios:
+> - Including different configuration code snippets in different environments
+> - Combining with conditional compilation to include different code based on compilation conditions
+> - Sharing code snippets that require preprocessing
+>
+> **It cannot and should not replace:**
+> - JavaScript/TypeScript `import` or `require` - for modularization and dependency management
+> - CSS `@import` - for stylesheet modularization
+> - HTML template systems or component systems
+>
+> If you simply want to modularize your code, please use the language's native module system. Only use `#include` when you need compile-time processing and conditional inclusion.
+
+this directive supports the following two syntaxes:
+
+```ts
+// #include "path/to/file"
+or
+// #include <path/to/file>
+```
+
+> [!NOTE]
+> 1. **Circular references**: If file A includes file B, and file B includes file A, circular references will be automatically detected and prevented, processing only once
+> 2. **Path resolution**: Relative paths are resolved relative to the configured working directory (`cwd`)
+> 3. **File extensions**: Any type of text file can be included, not limited to `.js` files
+> 4. **Nested processing**: Included files are fully processed by the preprocessor, so all supported directives can be used
+
 ## Custom directive
 
 You can used `defineDirective` to define your own directive.
