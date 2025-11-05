@@ -27,12 +27,24 @@ export type Parse<T = SimpleToken, N = SimpleNode> = (this: Parser, currentToken
 export type Transform<N = SimpleNode, ResultN = SimpleNode> = (this: Transformer, currentNode: N) => (ResultN | void)
 export type Generate = (this: Generator, ast: SimpleNode, comment?: Comment) => (string | void)
 
+/**
+ * Represents an object-based directive configuration for preprocessing.
+ *
+ * @template T - The type of token produced by the lexer, defaults to SimpleToken
+ * @template N - The type of AST node produced by the parser, defaults to SimpleNode
+ *
+ * @property {('pre' | 'post')} [enforce] - Optional enforcement phase for when the directive should be applied
+ * @property {Lex<T>} lex - Lexical analyzer function that tokenizes the input
+ * @property {Parse<T, N>} parse - Parser function that converts tokens into AST nodes
+ * @property {Transform<N>} transform - Transformation function that modifies AST nodes
+ * @property {Generate} generate - Code generation function that produces the final output
+ */
 export interface ObjectDirective<T = SimpleToken, N = SimpleNode> {
   enforce?: 'pre' | 'post'
   lex: Lex<T>
   parse: Parse<T, N>
   transform: Transform<N>
-  generate: Generate
+  generate?: Generate
 }
 
 export interface FunctionDirective<T = SimpleToken, N = SimpleNode> {

@@ -2,7 +2,6 @@
 import type { DefineStatement, DefineToken } from '../types'
 import process from 'node:process'
 import { defineDirective } from '../directive'
-import { createProgramNode } from '../utils'
 
 function resolveDefineNameAndValue(expression: string, env = process.env): [string, boolean] {
   if (/^\w*$/.test(expression)) {
@@ -52,8 +51,7 @@ export const theDefineDirective = defineDirective<DefineToken, DefineStatement>(
       else if (node.kind === 'undef') {
         context.env[node.value] = false
       }
-
-      return createProgramNode()
+      return node
     }
   },
   generate(node, comment) {

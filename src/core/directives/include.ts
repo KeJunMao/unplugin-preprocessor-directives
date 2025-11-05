@@ -2,7 +2,7 @@ import type { IncludeStatement, IncludeToken } from '../types'
 import { existsSync, readFileSync } from 'node:fs'
 import { isAbsolute, resolve } from 'node:path'
 import { defineDirective } from '../directive'
-import { createProgramNode, simpleMatchToken } from '../utils'
+import { simpleMatchToken } from '../utils'
 
 export const includeDirective = defineDirective<IncludeToken, IncludeStatement>((context) => {
   // 用于跟踪已包含的文件,防止循环引用(每次转换时重置)
@@ -34,7 +34,7 @@ export const includeDirective = defineDirective<IncludeToken, IncludeStatement>(
         // 检查文件是否存在
         if (!existsSync(filePath)) {
           context.logger.warn(`Include file not found: ${filePath}`)
-          return createProgramNode()
+          return node
         }
 
         // 获取当前的包含文件集合
@@ -43,7 +43,7 @@ export const includeDirective = defineDirective<IncludeToken, IncludeStatement>(
         // 防止循环引用
         if (currentIncludedFiles.has(filePath)) {
           context.logger.warn(`Circular include detected: ${filePath}`)
-          return createProgramNode()
+          return node
         }
 
         try {
@@ -66,6 +66,9 @@ export const includeDirective = defineDirective<IncludeToken, IncludeStatement>(
             return {
               type: 'CodeStatement',
               value: processedContent,
+              start: node.start,
+              end: node.end,
+              comment: node.comment,
             }
           }
 
@@ -73,13 +76,15 @@ export const includeDirective = defineDirective<IncludeToken, IncludeStatement>(
           return {
             type: 'CodeStatement',
             value: fileContent,
+            start: node.start,
+            end: node.end,
+            comment: node.comment,
           }
         }
         catch (error) {
           // 确保出错时也弹出栈
           includedFilesStack.pop()
           context.logger.error(`Error including file ${filePath}: ${error}`)
-          return createProgramNode()
         }
       }
     },

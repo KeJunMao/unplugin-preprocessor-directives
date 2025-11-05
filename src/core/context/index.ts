@@ -6,11 +6,12 @@ import MagicString from 'magic-string'
 import { loadEnv } from '../utils/env'
 import { createFilter } from '../utils/filter'
 import { createLogger } from '../utils/logger'
-import { Generator } from './generator'
+import { MsGenerator } from './generator'
 import { Lexer } from './lexer'
 import { Parser } from './parser'
 import { Transformer } from './transformer'
 
+export * from './generator'
 export * from './lexer'
 export * from './parser'
 
@@ -50,7 +51,7 @@ export class Context {
   lexers: Lex[]
   parsers: Parse[]
   transforms: Transform[]
-  generates: Generate[]
+  generates: (Generate | undefined)[]
   filter: (id: string) => boolean
   env: Record<string, any> = process.env
   logger: Logger
@@ -78,32 +79,37 @@ export class Context {
     )
   }
 
-  private _processCode(code: string) {
+  private _transform(code: string, id: string): MagicString | null {
     const tokens = Lexer.lex(code, this.lexers)
     const hasDirective = tokens.some(token => token.type !== 'code')
     if (!hasDirective)
       return null
     const ast = Parser.parse(tokens, this.parsers)
-    return Transformer.transform(ast, this.transforms)
+    const transformed = Transformer.transform(ast, this.transforms)
+    if (!transformed)
+      return null
+
+    const s = new MagicString(code, {
+      filename: id,
+    })
+    MsGenerator.generate(transformed, this.generates, s)
+    return s
   }
 
-  transform(code: string, _id: string) {
-    const transformed = this._processCode(code)
-    if (transformed)
-      return Generator.generate(transformed, this.generates)
+  transform(code: string, id: string) {
+    const s = this._transform(code, id)
+    return s?.toString()
   }
 
-  transformWithMap(code: string, _id: string) {
-    const transformed = this._processCode(code)
-    if (transformed) {
-      const s = new MagicString(code)
-      Generator.generateWithMap(transformed, this.generates, s)
+  transformWithMap(code: string, id: string) {
+    const s = this._transform(code, id)
+    if (s) {
       return {
-        code: s.toString(),
         map: s.generateMap({
           hires: true,
-          source: _id,
+          file: id,
         }),
+        code: s.toString(),
       }
     }
   }

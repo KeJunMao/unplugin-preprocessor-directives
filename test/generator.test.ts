@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { Context, Lexer, Parser } from '../src'
-import { Generator } from '../src/core/context/generator'
+import { CodeGenerator } from '../src/core/context/generator'
 
 describe('generator', () => {
   it('should generate code for Program node', () => {
@@ -13,7 +13,7 @@ describe('generator', () => {
         { type: 'CodeStatement', value: 'console.log("Hello, KeJun");' },
       ],
     }
-    const result = Generator.generate(node)
+    const result = CodeGenerator.generate(node)
     expect(result).toBe('console.log("Hello, World!");console.log("Hello, KeJun");')
   })
 
@@ -22,7 +22,7 @@ describe('generator', () => {
       type: 'CodeStatement',
       value: 'console.log("Hello, World!");',
     }
-    const result = Generator.generate(node)
+    const result = CodeGenerator.generate(node)
     expect(result).toBe('console.log("Hello, World!");')
   })
 
@@ -31,7 +31,7 @@ describe('generator', () => {
     const code = readFileSync(resolve(__dirname, './fixtures/if.html'), 'utf-8')
     const tokens = Lexer.lex(code, ctx.lexers)
     const ast = Parser.parse(tokens, ctx.parsers)
-    const generated = Generator.generate(ast, ctx.generates)
+    const generated = CodeGenerator.generate(ast, ctx.generates)
     expect(generated.replaceAll(/\s/g, '')).toBe(code.replaceAll(/\s/g, ''))
   })
 
@@ -40,6 +40,6 @@ describe('generator', () => {
       type: 'UnknownNode',
       value: 'console.log("Hello, World!");',
     }
-    expect(() => Generator.generate(node)).toThrowError('Generator: Unknown node type: UnknownNode')
+    expect(() => CodeGenerator.generate(node)).toThrowError('Generator: Unhandled node type "UnknownNode"')
   })
 })

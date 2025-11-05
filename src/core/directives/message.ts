@@ -1,6 +1,6 @@
 import type { MessageStatement, MessageToken } from '../types'
 import { defineDirective } from '../directive'
-import { createProgramNode, simpleMatchToken } from '../utils'
+import { simpleMatchToken } from '../utils'
 
 export const MessageDirective = defineDirective<MessageToken, MessageStatement>(context => ({
   lex(comment) {
@@ -29,7 +29,7 @@ export const MessageDirective = defineDirective<MessageToken, MessageStatement>(
           context.logger.info(node.value, { timestamp: true })
           break
       }
-      return createProgramNode()
+      return node
     }
   },
   generate(node, comment) {
