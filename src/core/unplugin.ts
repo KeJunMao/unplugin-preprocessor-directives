@@ -8,7 +8,6 @@ import { ifDirective, includeDirective, MessageDirective, theDefineDirective } f
 export const unpluginFactory: UnpluginFactory<UserOptions | undefined> = (
   options,
 ) => {
-  // @ts-expect-error ignore
   const ctx = new Context({ ...options, directives: [ifDirective, theDefineDirective, includeDirective, MessageDirective, ...options?.directives ?? []] })
   return {
     name: 'unplugin-preprocessor-directives',

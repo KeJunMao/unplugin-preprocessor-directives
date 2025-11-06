@@ -4,7 +4,7 @@ type FilterPattern = ReadonlyArray<string | RegExp> | string | RegExp | null
 
 export interface Options {
   cwd: string
-  directives: Directive[]
+  directives: Directive<any, any>[]
   include: FilterPattern
   exclude: FilterPattern
 }

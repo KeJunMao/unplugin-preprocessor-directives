@@ -7,7 +7,6 @@ describe('include', () => {
   const root = resolve(__dirname, './fixtures')
   const context = new Context({
     cwd: root,
-    // @ts-expect-error ignore
     directives: [includeDirective, ifDirective, theDefineDirective],
   })
 

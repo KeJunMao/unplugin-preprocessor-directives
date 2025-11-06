@@ -6,7 +6,6 @@ import { Context, theDefineDirective } from '../src'
 describe('define', () => {
   const root = resolve(__dirname, './fixtures')
   const context = new Context({
-    // @ts-expect-error ignore
     directives: [theDefineDirective],
   })
 

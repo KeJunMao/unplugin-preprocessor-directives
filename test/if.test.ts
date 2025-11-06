@@ -7,7 +7,6 @@ import { Context, ifDirective } from '../src'
 describe('if', () => {
   const root = resolve(__dirname, './fixtures')
   const context = new Context({
-    // @ts-expect-error ignore
     directives: [ifDirective],
   })
 

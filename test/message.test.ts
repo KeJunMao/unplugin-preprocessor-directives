@@ -4,7 +4,6 @@ import { Context, ifDirective, MessageDirective } from '../src'
 describe('message', () => {
   it('should log error message', () => {
     const context = new Context({
-      // @ts-expect-error ignore
       directives: [MessageDirective],
     })
 
@@ -18,7 +17,6 @@ describe('message', () => {
 
   it('should log warning message', () => {
     const context = new Context({
-      // @ts-expect-error ignore
       directives: [MessageDirective],
     })
 
@@ -32,7 +30,6 @@ describe('message', () => {
 
   it('should log info message', () => {
     const context = new Context({
-      // @ts-expect-error ignore
       directives: [MessageDirective],
     })
 
@@ -46,7 +43,6 @@ describe('message', () => {
 
   it('with if directive', () => {
     const context = new Context({
-      // @ts-expect-error ignore
       directives: [ifDirective, MessageDirective],
     })
     context.env.DEV = true

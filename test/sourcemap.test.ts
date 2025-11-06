@@ -3,7 +3,6 @@ import { Context, ifDirective } from '../src'
 
 describe('sourcemap', () => {
   const context = new Context({
-    // @ts-expect-error ignore
     directives: [ifDirective],
   })
 
